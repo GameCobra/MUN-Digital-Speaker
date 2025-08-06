@@ -1,4 +1,9 @@
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using MUN_Digital_Speaker.Data;
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddDbContext<MUN_Digital_SpeakerContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("MUN_Digital_SpeakerContext") ?? throw new InvalidOperationException("Connection string 'MUN_Digital_SpeakerContext' not found.")));
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
