@@ -54,7 +54,7 @@ namespace MUN_Digital_Speaker.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Country,TimesSpoken,RequestedToSpeak")] Delegation delegation)
+        public async Task<IActionResult> Create([Bind("Id,Key,Country,TimesSpoken,RequestedToSpeak")] Delegation delegation)
         {
             if (ModelState.IsValid)
             {
@@ -86,7 +86,7 @@ namespace MUN_Digital_Speaker.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Country,TimesSpoken,RequestedToSpeak")] Delegation delegation)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Key,Country,TimesSpoken,RequestedToSpeak")] Delegation delegation)
         {
             if (id != delegation.Id)
             {
