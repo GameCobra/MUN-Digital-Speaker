@@ -16,6 +16,9 @@
                 @Html.DisplayNameFor(model => model.Country)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.Login)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.Key)
             </th>
             <th>
@@ -32,6 +35,9 @@
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Country)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Login)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Key)
@@ -51,3 +57,14 @@
 }
     </tbody>
 </table>
+@{
+#pragma warning disable CS8605
+}
+@if ((bool)@ViewData["hasDuplicitLogins"])
+{
+    <b style="color:red;">! A login is shared by multiple ids !</b>
+}
+
+@{
+#pragma warning restore CS8605
+}

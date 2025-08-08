@@ -5,6 +5,7 @@ namespace MUN_Digital_Speaker.Models
     public class Delegation
     {
         public int Id { get; set; }
+        public int Login { get; set; }
         public int Key { get; set; }
         public string? Country { get; set; }
         [Display(Name = "Times Spoken")]

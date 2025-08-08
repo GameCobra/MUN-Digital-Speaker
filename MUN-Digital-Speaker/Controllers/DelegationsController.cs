@@ -22,6 +22,11 @@ namespace MUN_Digital_Speaker.Controllers
         // GET: Delegations
         public async Task<IActionResult> Index()
         {
+            List<Delegation> delegations = await _context.Delegation.ToListAsync();
+            List<int> logins = delegations.Select(x => x.Login).ToList();
+            bool hasDuplicits = logins.GroupBy(x => x).Any(x => x.Count() >= 2);
+            ViewData["hasDuplicitLogins"] = hasDuplicits;
+
             return View(await _context.Delegation.ToListAsync());
         }
 
@@ -54,7 +59,7 @@ namespace MUN_Digital_Speaker.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Key,Country,TimesSpoken,RequestedToSpeak")] Delegation delegation)
+        public async Task<IActionResult> Create([Bind("Id,Login,Key,Country,TimesSpoken,RequestedToSpeak")] Delegation delegation)
         {
             if (ModelState.IsValid)
             {
@@ -86,7 +91,7 @@ namespace MUN_Digital_Speaker.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Key,Country,TimesSpoken,RequestedToSpeak")] Delegation delegation)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Login,Key,Country,TimesSpoken,RequestedToSpeak")] Delegation delegation)
         {
             if (id != delegation.Id)
             {
