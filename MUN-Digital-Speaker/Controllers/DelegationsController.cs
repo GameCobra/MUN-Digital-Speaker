@@ -24,8 +24,16 @@ namespace MUN_Digital_Speaker.Controllers
         {
             List<Delegation> delegations = await _context.Delegation.ToListAsync();
             List<int> logins = delegations.Select(x => x.Login).ToList();
-            bool hasDuplicits = logins.GroupBy(x => x).Any(x => x.Count() >= 2);
-            ViewData["hasDuplicitLogins"] = hasDuplicits;
+            var firstDuplicite = logins.GroupBy(x => x).FirstOrDefault(x => x.Count() >= 2);
+            //System.Diagnostics.Debug.WriteLine(firstDuplicite);
+            if (firstDuplicite != null)
+            {
+                ViewData["hasDuplicitLogins"] = firstDuplicite.Key;
+            }
+            else
+            {
+                ViewData["hasDuplicitLogins"] = null;
+            }
 
             return View(await _context.Delegation.ToListAsync());
         }

@@ -60,9 +60,9 @@
 @{
 #pragma warning disable CS8605
 }
-@if ((bool)@ViewData["hasDuplicitLogins"])
+@if ((int?)@ViewData["hasDuplicitLogins"] != null)
 {
-    <b style="color:red;">! A login is shared by multiple ids !</b>
+    <b style="color:red;">! The login '@ViewData["hasDuplicitLogins"]' is shared by multiple instances !</b>
 }
 
 @{
