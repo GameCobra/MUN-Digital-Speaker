@@ -69,6 +69,15 @@ namespace MUN_Digital_Speaker.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Login,Key,Country,TimesSpoken,RequestedToSpeak")] Delegation delegation)
         {
+            List<Delegation> delegations = await _context.Delegation.ToListAsync();
+            bool isDuplicit = delegations.Any(x => x.Login == delegation.Login);
+
+            if (isDuplicit)
+            {
+                ModelState.AddModelError("Login", "That login already exists.");
+                return View(delegation);
+            }
+
             if (ModelState.IsValid)
             {
                 _context.Add(delegation);
