@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -69,10 +70,8 @@ namespace MUN_Digital_Speaker.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Login,Key,Country,TimesSpoken,RequestedToSpeak")] Delegation delegation)
         {
-            List<Delegation> delegations = await _context.Delegation.ToListAsync();
-            bool isDuplicit = delegations.Any(x => x.Login == delegation.Login);
 
-            if (isDuplicit)
+            if (await SpeakerEntryValidation.DoseValueExist(x => x.Login == delegation.Login, _context))
             {
                 ModelState.AddModelError("Login", "That login already exists.");
                 return View(delegation);
@@ -113,6 +112,12 @@ namespace MUN_Digital_Speaker.Controllers
             if (id != delegation.Id)
             {
                 return NotFound();
+            }
+
+            if (await SpeakerEntryValidation.DoseValueExist(x => x.Login == delegation.Login, _context))
+            {
+                ModelState.AddModelError("Login", "That login already exists.");
+                return View(delegation);
             }
 
             if (ModelState.IsValid)
