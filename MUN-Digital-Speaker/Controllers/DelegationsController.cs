@@ -114,7 +114,9 @@ namespace MUN_Digital_Speaker.Controllers
                 return NotFound();
             }
 
-            if (await SpeakerEntryValidation.DoseValueExist(x => x.Login == delegation.Login, _context))
+            bool doseOtherEntryHaveSameLogin = await _context.Delegation.AnyAsync(x => x.Id != id && x.Login == delegation.Login);
+            
+            if (doseOtherEntryHaveSameLogin && await SpeakerEntryValidation.DoseValueExist(x => x.Login == delegation.Login, _context))
             {
                 ModelState.AddModelError("Login", "That login already exists.");
                 return View(delegation);
