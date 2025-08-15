@@ -24,9 +24,10 @@ namespace MUN_Digital_Speaker.Controllers
         public async Task<IActionResult> Index()
         {
             List<Delegation> delegations = await _context.Delegation.ToListAsync();
-            List<int> logins = delegations.Select(x => x.Login).ToList();
-            var firstDuplicite = logins.GroupBy(x => x).FirstOrDefault(x => x.Count() >= 2);
+            var firstDuplicite = delegations.GroupBy(x => x.Login)
+                                            .FirstOrDefault(x => x.Count() >= 2);
             //System.Diagnostics.Debug.WriteLine(firstDuplicite);
+            
             if (firstDuplicite != null)
             {
                 ViewData["hasDuplicitLogins"] = firstDuplicite.Key;
@@ -70,14 +71,26 @@ namespace MUN_Digital_Speaker.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Login,Key,Country,TimesSpoken,RequestedToSpeak")] Delegation delegation)
         {
+            bool isError = false;
 
-            if (await SpeakerEntryValidation.DoseValueExist(x => x.Login == delegation.Login, _context))
+            bool isDupliciteLogin = await _context.Delegation.AnyAsync(x => x.Login == delegation.Login);
+
+            if (isDupliciteLogin)
             {
                 ModelState.AddModelError("Login", "That login already exists.");
-                return View(delegation);
+                isError = true;
             }
 
-            if (ModelState.IsValid)
+            bool isDupliciteCountry = await _context.Delegation.AnyAsync(x => x.Country == delegation.Country);
+
+            if (isDupliciteCountry)
+            {
+                ModelState.AddModelError("Country", "That country already exists.");
+                isError = true;
+            }
+
+
+            if (ModelState.IsValid && !isError)
             {
                 _context.Add(delegation);
                 await _context.SaveChangesAsync();
@@ -109,20 +122,30 @@ namespace MUN_Digital_Speaker.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Login,Key,Country,TimesSpoken,RequestedToSpeak")] Delegation delegation)
         {
+            bool isError = false;
+
             if (id != delegation.Id)
             {
                 return NotFound();
             }
 
-            bool doseOtherEntryHaveSameLogin = await _context.Delegation.AnyAsync(x => x.Id != id && x.Login == delegation.Login);
+            bool isDupliciteLogin = await _context.Delegation.AnyAsync(x => x.Id != id && x.Login == delegation.Login);
             
-            if (doseOtherEntryHaveSameLogin && await SpeakerEntryValidation.DoseValueExist(x => x.Login == delegation.Login, _context))
+            if (isDupliciteLogin)
             {
                 ModelState.AddModelError("Login", "That login already exists.");
-                return View(delegation);
+                isError = true;
             }
 
-            if (ModelState.IsValid)
+            bool isDupliciteCountry = await _context.Delegation.AnyAsync(x => x.Id != id && x.Country == delegation.Country);
+
+            if (isDupliciteCountry)
+            {
+                ModelState.AddModelError("Country", "That country already exists.");
+                isError = true;
+            }
+
+            if (ModelState.IsValid && !isError)
             {
                 try
                 {
