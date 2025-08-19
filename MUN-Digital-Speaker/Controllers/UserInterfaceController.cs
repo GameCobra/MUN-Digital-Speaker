@@ -29,6 +29,12 @@ namespace MUN_Digital_Speaker.Controllers
             return View();
         }
 
+        [HttpPost]
+        public async Task<IActionResult> RequestToSpeak(RequestToSpeak requested)
+        {
+            return RedirectToAction(actionName: nameof(Dashboard));
+        }
+
         [Authorize]
         public async Task<IActionResult> Dashboard()
         {
