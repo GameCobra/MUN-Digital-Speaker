@@ -30,8 +30,33 @@ namespace MUN_Digital_Speaker.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> RequestToSpeak(RequestToSpeak requested)
+        public async Task<IActionResult> SpeakRequest(SpeakRequest requested)
         {
+            Delegation delegation = await _context.Delegation.FirstAsync(x => x.Login == requested.Login);
+            delegation.RequestedToSpeak = true;
+            if (requested.IsRevoking)
+            {
+                delegation.RequestedToSpeak = false;
+            }
+            DelegationsController delegationController = new DelegationsController(_context);
+
+            try
+            {
+                _context.Update(delegation);
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!delegationController.DelegationExists(delegation.Id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+
             return RedirectToAction(actionName: nameof(Dashboard));
         }
 
@@ -43,6 +68,8 @@ namespace MUN_Digital_Speaker.Controllers
             #pragma warning restore 8603, 8602
 
             ViewData["country"] = loggedInDelegation.Country;
+            ViewData["login"] = loggedInDelegation.Login;
+            ViewData["hasRequested"] = loggedInDelegation.RequestedToSpeak;
             return View();
         }
 

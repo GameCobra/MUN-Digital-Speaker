@@ -201,7 +201,7 @@ namespace MUN_Digital_Speaker.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        private bool DelegationExists(int id)
+        public bool DelegationExists(int id)
         {
             return _context.Delegation.Any(e => e.Id == id);
         }
