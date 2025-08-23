@@ -2,6 +2,9 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using MUN_Digital_Speaker.Data;
+using Microsoft.AspNetCore.Rewrite;
+
+
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<MUN_Digital_SpeakerContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("MUN_Digital_SpeakerContext") ?? throw new InvalidOperationException("Connection string 'MUN_Digital_SpeakerContext' not found.")));
@@ -32,14 +35,17 @@ app.UseAuthorization();
 app.UseHttpsRedirection();
 app.UseRouting();
 
-app.UseAuthorization();
-
 app.MapStaticAssets();
 
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}")
     .WithStaticAssets();
+
+var options = new RewriteOptions()
+    .AddRedirect("users", "Delegations/index");
+
+app.UseRewriter(options);
 
 
 app.Run();
