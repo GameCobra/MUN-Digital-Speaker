@@ -30,10 +30,11 @@ if (!app.Environment.IsDevelopment())
 }
 
 app.UseAuthentication();
-app.UseAuthorization();
 
 app.UseHttpsRedirection();
 app.UseRouting();
+
+app.UseAuthorization();
 
 app.MapStaticAssets();
 
