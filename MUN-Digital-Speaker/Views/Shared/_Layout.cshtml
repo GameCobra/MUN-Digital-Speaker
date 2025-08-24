@@ -23,9 +23,6 @@
                     <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                         <ul class="navbar-nav flex-grow-1">
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                            </li>
-                            <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="UserInterface" asp-action="Dashboard">Dashboard</a>
                             </li>
                             <li class="nav-item">
@@ -34,12 +31,20 @@
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="DelegationsController" asp-action="Index">Admin Pannel</a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="UserInterface" asp-action="Login">Login</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="UserInterface" asp-action="Logout">Logout</a>
-                            </li>
+                            @{#pragma warning disable CS8602}
+                            @if (User.Identity.Name == null)
+                            {
+                                <li class="nav-item ms-auto">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="UserInterface" asp-action="Login">Login</a>
+                                </li>
+                            }
+                            else
+                            {
+                                <li class="nav-item ms-auto">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="UserInterface" asp-action="Logout">@await Component.InvokeAsync("UserInfo")</a>
+                                </li>
+                            }
+                            @{#pragma warning restore CS8602}
                         </ul>
                     </div>
                 </div>

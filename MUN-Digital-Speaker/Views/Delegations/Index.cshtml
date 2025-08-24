@@ -57,14 +57,10 @@
 }
     </tbody>
 </table>
-@{
-#pragma warning disable CS8605
-}
+
+@{#pragma warning disable CS8605}
 @if ((int?)@ViewData["hasDuplicitLogins"] != null)
 {
     <b style="color:red;">! The login '@ViewData["hasDuplicitLogins"]' is shared by multiple instances !</b>
 }
-
-@{
-#pragma warning restore CS8605
-}
+@{#pragma warning restore CS8605}
