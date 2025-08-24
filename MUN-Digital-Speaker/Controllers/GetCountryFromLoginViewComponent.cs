@@ -7,11 +7,11 @@ using System.Security.Claims;
 
 namespace MUN_Digital_Speaker.Controllers
 {
-    public class UserInfoViewComponent : ViewComponent
+    public class GetCountryFromLoginViewComponent : ViewComponent
     {
         private readonly MUN_Digital_SpeakerContext _context;
 
-        public UserInfoViewComponent(MUN_Digital_SpeakerContext context)
+        public GetCountryFromLoginViewComponent(MUN_Digital_SpeakerContext context)
         {
             _context = context;
         }

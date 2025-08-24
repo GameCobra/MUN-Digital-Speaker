@@ -86,7 +86,9 @@ namespace MUN_Digital_Speaker.Controllers
             if (!ModelState.IsValid)
                 return View(model);
 
-            if (model.Login == 12345 && model.Key == 0)
+            bool isValadeDelegation = _context.Delegation.Any(x => x.Login == model.Login && x.Key == model.Key);
+
+            if (isValadeDelegation)
             {
                 var claims = new List<Claim> 
                 {

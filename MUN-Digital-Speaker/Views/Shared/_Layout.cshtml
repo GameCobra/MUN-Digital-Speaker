@@ -29,7 +29,7 @@
                                 <a class="nav-link text-dark" asp-area="" asp-controller="SpeakerOrder" asp-action="index">Speaker List</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="DelegationsController" asp-action="Index">Admin Pannel</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Delegations" asp-action="Index">Admin Pannel</a>
                             </li>
                             @{#pragma warning disable CS8602}
                             @if (User.Identity.Name == null)
@@ -41,7 +41,7 @@
                             else
                             {
                                 <li class="nav-item ms-auto">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="UserInterface" asp-action="Logout">@await Component.InvokeAsync("UserInfo")</a>
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="UserInterface" asp-action="Logout">@await Component.InvokeAsync("GetCountryFromLogin")</a>
                                 </li>
                             }
                             @{#pragma warning restore CS8602}
@@ -56,12 +56,14 @@
             @RenderBody()
         </main>
     </div>
-
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2025 - MUN_Digital_Speaker - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-        </div>
-    </footer>
+    @if (((bool?)ViewData["HideNavbar"]).GetValueOrDefault() == false)
+    {
+        <footer class="border-top footer text-muted">
+            <div class="container">
+                &copy; 2025 - MUN_Digital_Speaker - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            </div>
+        </footer>
+    }
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
