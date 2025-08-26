@@ -33,5 +33,10 @@ namespace MUN_Digital_Speaker.Controllers
             //ViewData["displayList"] = speakingCountries;
             return View(speakingCountries);
         }
+
+        public IActionResult SpeakerOrderDashboard()
+        {
+            return View();
+        }
     }
 }
