@@ -1,0 +1,29 @@
+﻿@{
+    ViewData["Title"] = "Speaker Order Dashboard";
+}
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Speak">
+            <div class="text-danger"></div>
+            <input type="hidden" value="Speak" />
+
+            <div class="form-group">
+                <input type="submit" value="Speak" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="ClearSpeak">
+            <div class="text-danger"></div>
+            <input type="hidden" value="Clear" />
+
+            <div class="form-group">
+                <input type="submit" value="Clear" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>

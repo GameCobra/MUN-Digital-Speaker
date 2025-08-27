@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using MUN_Digital_Speaker.Data;
+using MUN_Digital_Speaker.Models;
 
 namespace MUN_Digital_Speaker.Controllers
 {
@@ -37,6 +39,40 @@ namespace MUN_Digital_Speaker.Controllers
         public IActionResult SpeakerOrderDashboard()
         {
             return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Speak()
+        {
+            #pragma warning disable CS8619 // Nullability of reference types in value doesn't match target type.
+            Delegation topContry = _context.Delegation.Where(x => x.RequestedToSpeak == true)
+                               .OrderBy(x => x.TimesSpoken)
+                               .ThenBy(x => x.Login)
+                               .First();
+            #pragma warning restore CS8619 // Nullability of reference types in value doesn't match target type.
+
+            topContry.TimesSpoken += 1;
+            topContry.RequestedToSpeak = false;
+
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("SpeakerOrderDashboard", "SpeakerOrder");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ClearSpeak()
+        {
+            var delegations = await _context.Delegation.Where(d => d.RequestedToSpeak == true)
+                                                       .ToListAsync();
+
+            foreach (var delegation in delegations)
+            {
+                delegation.RequestedToSpeak = false;
+            }
+
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("SpeakerOrderDashboard", "SpeakerOrder");
         }
     }
 }
