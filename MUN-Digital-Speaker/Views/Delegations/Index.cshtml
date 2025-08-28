@@ -2,6 +2,7 @@
 
 @{
     ViewData["Title"] = "Index";
+    int? hasDuplicitLogins = (int?)@ViewData["hasDuplicitLogins"];
 }
 
 <h1>Index</h1>
@@ -37,7 +38,16 @@
                 @Html.DisplayFor(modelItem => item.Country)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Login)
+                @if (hasDuplicitLogins == item.Login)
+                {
+                    <a style="color: red;">
+                    @Html.DisplayFor(modelItem => item.Login)
+                    </a>
+                }
+                else
+                {
+                    @Html.DisplayFor(modelItem => item.Login)
+                }
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Key)
@@ -59,7 +69,7 @@
 </table>
 
 
-@if ((int?)@ViewData["hasDuplicitLogins"] != null)
+@if (hasDuplicitLogins != null)
 {
-    <b style="color:red;">! The login '@ViewData["hasDuplicitLogins"]' is shared by multiple instances !</b>
+    <b style="color:red;">! The login '@hasDuplicitLogins' is shared by multiple instances !</b>
 }
