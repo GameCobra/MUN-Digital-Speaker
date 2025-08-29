@@ -13,18 +13,23 @@ namespace MUN_Digital_Speaker.Controllers
         {
             _context = context;
         }
+        public IActionResult SpeakerListAsJSON()
+        {
+            #pragma warning disable CS8619 // Nullability of reference types in value doesn't match target type.
+            List<string> speakingCountries = _context.Delegation.Where(x => x.RequestedToSpeak == true)
+                               .OrderBy(x => x.TimesSpoken)
+                               .ThenBy(x => x.Login)
+                               .Select(x => x.Country).ToList();
+            #pragma warning restore CS8619 // Nullability of reference types in value doesn't match target type.
+
+            //ViewData["displayList"] = speakingCountries;
+            return Json(speakingCountries);
+        }
+
+
 
         public IActionResult Index()
         {
-            /*
-            var parsedSpeakerList = _context.Delegation.Where(x => x.RequestedToSpeak == true)
-                                                       .Select(x => x.Country).ToList();
-
-            if (parsedSpeakerList == null)
-            {
-
-            }
-            */
             #pragma warning disable CS8619 // Nullability of reference types in value doesn't match target type.
             List<string> speakingCountries = _context.Delegation.Where(x => x.RequestedToSpeak == true)
                                .OrderBy(x =>  x.TimesSpoken)
