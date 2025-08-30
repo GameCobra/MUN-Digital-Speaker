@@ -28,5 +28,10 @@ namespace MUN_Digital_Speaker.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
+        public IActionResult Creadits()
+        {
+            return View();
+        }
     }
 }
