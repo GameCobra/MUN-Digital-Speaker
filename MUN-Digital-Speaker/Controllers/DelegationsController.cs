@@ -205,5 +205,33 @@ namespace MUN_Digital_Speaker.Controllers
         {
             return _context.Delegation.Any(e => e.Id == id);
         }
+
+        public IActionResult Upload()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Upload(UploadModel model)
+        {
+            if (model.File != null && model.File.Length > 0)
+            {
+                var filePath = Path.Combine("wwwroot/uploads", model.File.FileName);
+
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await model.File.CopyToAsync(stream);
+                }
+
+                ViewData["Message"] = "File uploaded successfully!";
+            }
+            else
+            {
+                ViewData["Message"] = "No file selected.";
+            }
+
+            return RedirectToAction(nameof(Index));
+        }
+
     }
 }
