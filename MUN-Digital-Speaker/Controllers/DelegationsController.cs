@@ -230,7 +230,7 @@ namespace MUN_Digital_Speaker.Controllers
                 ViewData["Message"] = "No file selected.";
             }
 
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("Index", "Delegations");
         }
 
     }
