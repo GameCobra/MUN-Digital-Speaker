@@ -214,23 +214,48 @@ namespace MUN_Digital_Speaker.Controllers
         [HttpPost]
         public async Task<IActionResult> Upload(UploadModel model)
         {
-            if (model.File != null && model.File.Length > 0)
-            {
-                var filePath = Path.Combine("wwwroot/uploads", model.File.FileName);
-
-                using (var stream = new FileStream(filePath, FileMode.Create))
-                {
-                    await model.File.CopyToAsync(stream);
-                }
-
-                ViewData["Message"] = "File uploaded successfully!";
-            }
-            else
+            if (model.File == null)
             {
                 ViewData["Message"] = "No file selected.";
+                return RedirectToAction("Index", "Delegations");
             }
 
+            if (model.File.Length == 0)
+            {
+                ViewData["Message"] = "File has no data.";
+                return RedirectToAction("Index", "Delegations");
+            }
+
+            var records = new List<string[]>();
+
+            using (var stream = new StreamReader(model.File.OpenReadStream()))
+            {
+                while (!stream.EndOfStream)
+                {
+                    var line = await stream.ReadLineAsync();
+                    var values = line.Split(','); // split CSV by commas
+                    records.Add(values);
+                }
+            }
+            for (int i = 0; i < records.Count; i++)
+            {
+                Delegation parseDelegation = new Delegation { Country = records[i][0], Login = int.Parse(records[i][1]), Key = 0, RequestedToSpeak = false, TimesSpoken = 0 };
+                _context.Add(parseDelegation);
+            }
+
+            await _context.SaveChangesAsync();
+
             return RedirectToAction("Index", "Delegations");
+
+
+            //var filePath = Path.Combine("wwwroot/uploads", model.File.FileName);
+            /*
+            using (var stream = new FileStream(filePath, FileMode.Create))
+            {
+                await model.File.CopyToAsync(stream);
+            }*/
+
+            ViewData["Message"] = "File uploaded successfully!";
         }
 
     }
