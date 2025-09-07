@@ -244,6 +244,9 @@ namespace MUN_Digital_Speaker.Controllers
             }
 
             await _context.SaveChangesAsync();
+            ViewData["Message"] = "Upload Succsesful";
+
+
 
             return RedirectToAction("Index", "Delegations");
 
