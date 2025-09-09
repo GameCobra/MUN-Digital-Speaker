@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -21,8 +22,13 @@ namespace MUN_Digital_Speaker.Controllers
         }
 
         // GET: Delegations
+        [Authorize]
         public async Task<IActionResult> Index()
         {
+            if (User.Identity.Name != "Admin")
+            {
+                return RedirectToAction("Index", "Home");
+            }
             List<Delegation> delegations = await _context.Delegation.ToListAsync();
             var firstDuplicite = delegations.GroupBy(x => x.Login)
                                             .FirstOrDefault(x => x.Count() >= 2);
