@@ -27,7 +27,7 @@ namespace MUN_Digital_Speaker.Controllers
         {
             if (User.Identity.Name != "Admin")
             {
-                return RedirectToAction("Index", "Home");
+                //return RedirectToAction("Index", "Home");
             }
             List<Delegation> delegations = await _context.Delegation.ToListAsync();
             var firstDuplicite = delegations.GroupBy(x => x.Login)
