@@ -25,11 +25,12 @@ namespace MUN_Digital_Speaker.Controllers
         [Authorize]
         public async Task<IActionResult> Index()
         {
-            if (User.Identity.Name != "Admin")
-            {
-                //return RedirectToAction("Index", "Home");
-            }
             List<Delegation> delegations = await _context.Delegation.ToListAsync();
+
+            if (!delegations.Exists(x => x.Login.ToString() == User.Identity.Name && x.Country == "Admin"))
+            {
+                return RedirectToAction("Index", "Home");
+            }
             var firstDuplicite = delegations.GroupBy(x => x.Login)
                                             .FirstOrDefault(x => x.Count() >= 2);
             //System.Diagnostics.Debug.WriteLine(firstDuplicite);
