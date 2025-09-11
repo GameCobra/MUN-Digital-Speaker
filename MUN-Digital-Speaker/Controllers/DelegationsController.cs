@@ -29,6 +29,7 @@ namespace MUN_Digital_Speaker.Controllers
 
             if (!delegations.Exists(x => x.Login.ToString() == User.Identity.Name && x.Country == "Admin"))
             {
+                ViewData["messgae"] = "Not authorized to accses that page";
                 return RedirectToAction("Index", "Home");
             }
             var firstDuplicite = delegations.GroupBy(x => x.Login)
