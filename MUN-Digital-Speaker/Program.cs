@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using MUN_Digital_Speaker.Data;
 using Microsoft.AspNetCore.Rewrite;
+using MUN_Digital_Speaker;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -17,6 +18,8 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
     {
         options.LoginPath = "/UserInterface/Login"; // redirect if not logged in
     });
+
+builder.Services.AddScoped<DelegationLookup>();
 
 var app = builder.Build();
 

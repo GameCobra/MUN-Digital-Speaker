@@ -10,11 +10,18 @@
     <link rel="stylesheet" href="~/MUN_Digital_Speaker.styles.css" asp-append-version="true" />
 </head>
 <body>
-    @if (((bool?)ViewData["HideNavbar"]).GetValueOrDefault() == false)
+
+    @{
+        bool navbarVisable = !(((bool?)ViewData["HideNavbar"]).GetValueOrDefault());
+    }
+
+    @if (navbarVisable == true)
     {
         <header>
             <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
                 <div class="container-fluid">
+
+                    <!-- Logo type text on left side of nav bar -->
                     <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">MUN Digital Speaker</a>
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                             aria-expanded="false" aria-label="Toggle navigation">
@@ -22,14 +29,32 @@
                     </button>
                     <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                         <ul class="navbar-nav flex-grow-1">
+
+                            <!-- Navagation items -->
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="UserInterface" asp-action="Dashboard">Dashboard</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="SpeakerOrder" asp-action="index">Speaker List</a>
                             </li>
-                            @{#pragma warning disable CS8602}
-                            @if (User.Identity.Name == null)
+
+                            @{
+                                @inject DelegationLookup delLookup
+                                #pragma warning disable CS8602
+                                string? loggedInUser = await delLookup.GetCountryFromLogin(User.Identity.Name);
+                                #pragma warning restore CS8602
+                                bool isLoggedIn = loggedInUser != null ? true : false;
+                                bool isAdmin = loggedInUser == "Admin" ? true : false;
+                            }
+
+                            @if (isAdmin)
+                            {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Delegations" asp-action="Index">Admin Pannel</a>
+                            </li>
+                            }
+
+                            @if (!isLoggedIn)
                             {
                                 <li class="nav-item ms-auto">
                                     <a class="nav-link text-dark" asp-area="" asp-controller="UserInterface" asp-action="Login">Login</a>
@@ -37,18 +62,10 @@
                             }
                             else
                             {
-                                //@{string usesrName =  await Component.InvokeAsync("GetCountryFromLogin");}
-                                if ("a" == "Admin")
-                                {
-                                    <li class="nav-item">
-                                        <a class="nav-link text-dark" asp-area="" asp-controller="Delegations" asp-action="Index">Admin Pannel</a>
-                                    </li>
-                                }
                                 <li class="nav-item ms-auto">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="UserInterface" asp-action="Logout">@await Component.InvokeAsync("GetCountryFromLogin")</a>
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="UserInterface" asp-action="Logout">@loggedInUser</a>
                                 </li>
                             }
-                            @{#pragma warning restore CS8602}
                         </ul>
                     </div>
                 </div>

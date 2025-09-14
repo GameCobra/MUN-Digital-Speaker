@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.EntityFrameworkCore;
 using MUN_Digital_Speaker.Data;
 using MUN_Digital_Speaker.Models;
 
@@ -13,8 +14,13 @@ namespace MUN_Digital_Speaker
             _context = context;
         }
 
-        public async Task<String?> GetCountryFromLogin(string login)
+        public async Task<String?> GetCountryFromLogin(string? login)
         {
+            if (login == null)
+            {
+                return null;
+            }
+
             Delegation? selectedDelegation = await _context.Delegation.FirstOrDefaultAsync(x => x.Login.ToString() == login);
             if (selectedDelegation == null)
             {
@@ -22,6 +28,5 @@ namespace MUN_Digital_Speaker
             }
             return selectedDelegation.Country.ToString();
         }
-
     }
 }
