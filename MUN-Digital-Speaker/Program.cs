@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using MUN_Digital_Speaker.Data;
 using Microsoft.AspNetCore.Rewrite;
 using MUN_Digital_Speaker;
+using MUN_Digital_Speaker.Models;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -20,6 +21,8 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
     });
 
 builder.Services.AddScoped<DelegationLookup>();
+
+builder.Services.AddSingleton<SpeakerListControlStates>();
 
 var app = builder.Build();
 
