@@ -12,10 +12,13 @@ namespace MUN_Digital_Speaker.Controllers
     public class UserInterfaceController : Controller
     {
         private readonly MUN_Digital_SpeakerContext _context;
+        private readonly SpeakerListControlStates _speakerControl;
 
-        public UserInterfaceController(MUN_Digital_SpeakerContext context)
+
+        public UserInterfaceController(MUN_Digital_SpeakerContext context, SpeakerListControlStates speakerControl)
         {
             _context = context;
+            _speakerControl = speakerControl;
         }
 
         public IActionResult Index()
@@ -32,6 +35,10 @@ namespace MUN_Digital_Speaker.Controllers
         [HttpPost]
         public async Task<IActionResult> SpeakRequest(SpeakRequest requested)
         {
+            if (_speakerControl.allowSpeakRequests == false)
+            {
+                return RedirectToAction(actionName: nameof(Dashboard), new { message = "locked" });
+            }
             Delegation delegation = await _context.Delegation.FirstAsync(x => x.Login == requested.Login);
             delegation.RequestedToSpeak = true;
             if (requested.IsRevoking)
@@ -57,11 +64,11 @@ namespace MUN_Digital_Speaker.Controllers
                 }
             }
 
-            return RedirectToAction(actionName: nameof(Dashboard));
+            return RedirectToAction(actionName: nameof(Dashboard), new {message = "succsesful"});
         }
 
         [Authorize]
-        public async Task<IActionResult> Dashboard()
+        public async Task<IActionResult> Dashboard(string message)
         {
             #pragma warning disable 8603, 8602
             Delegation? loggedInDelegation = await _context.Delegation.FirstAsync(x => x.Login.ToString() == User.Identity.Name);
@@ -70,6 +77,7 @@ namespace MUN_Digital_Speaker.Controllers
             ViewData["country"] = loggedInDelegation.Country;
             ViewData["login"] = loggedInDelegation.Login;
             ViewData["hasRequested"] = loggedInDelegation.RequestedToSpeak;
+            ViewData["message"] = message;
             return View();
         }
 
