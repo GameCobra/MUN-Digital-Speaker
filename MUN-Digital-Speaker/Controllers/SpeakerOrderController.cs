@@ -8,10 +8,13 @@ namespace MUN_Digital_Speaker.Controllers
     public class SpeakerOrderController : Controller
     {
         private readonly MUN_Digital_SpeakerContext _context;
+        private readonly SpeakerListControlStates _speakerControl;
 
-        public SpeakerOrderController(MUN_Digital_SpeakerContext context)
+
+        public SpeakerOrderController(MUN_Digital_SpeakerContext context, SpeakerListControlStates speakerControl)
         {
             _context = context;
+            _speakerControl = speakerControl;
         }
         public IActionResult SpeakerListAsJSON()
         {
@@ -77,6 +80,13 @@ namespace MUN_Digital_Speaker.Controllers
 
             await _context.SaveChangesAsync();
 
+            return RedirectToAction("SpeakerOrderDashboard", "SpeakerOrder");
+        }
+
+        [HttpPost]
+        public IActionResult Lock()
+        {
+            _speakerControl.allowSpeakRequests = false;
             return RedirectToAction("SpeakerOrderDashboard", "SpeakerOrder");
         }
     }
