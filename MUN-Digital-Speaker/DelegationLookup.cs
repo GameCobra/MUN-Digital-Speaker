@@ -28,5 +28,18 @@ namespace MUN_Digital_Speaker
             }
             return selectedDelegation.Country.ToString();
         }
+
+        [Authorize]
+        public async Task<bool> IsAdmin(int userLogin)
+        {
+            List<Delegation> delegations = await _context.Delegation.ToListAsync();
+
+            if (delegations.Exists(x => x.Login == userLogin && x.Country == "Admin"))
+            {
+                return true;
+            }
+
+            return false;
+        }
     }
 }

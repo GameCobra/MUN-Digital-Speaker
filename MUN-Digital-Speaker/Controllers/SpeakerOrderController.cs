@@ -52,6 +52,7 @@ namespace MUN_Digital_Speaker.Controllers
         [HttpPost]
         public async Task<IActionResult> Speak()
         {
+
             #pragma warning disable CS8619 // Nullability of reference types in value doesn't match target type.
             Delegation topContry = _context.Delegation.Where(x => x.RequestedToSpeak == true)
                                .OrderBy(x => x.TimesSpoken)
@@ -87,6 +88,13 @@ namespace MUN_Digital_Speaker.Controllers
         public IActionResult Lock()
         {
             _speakerControl.allowSpeakRequests = false;
+            return RedirectToAction("SpeakerOrderDashboard", "SpeakerOrder");
+        }
+
+        [HttpPost]
+        public IActionResult Unlock()
+        {
+            _speakerControl.allowSpeakRequests = true;
             return RedirectToAction("SpeakerOrderDashboard", "SpeakerOrder");
         }
     }
