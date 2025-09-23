@@ -15,10 +15,13 @@ namespace MUN_Digital_Speaker.Controllers
     public class DelegationsController : Controller
     {
         private readonly MUN_Digital_SpeakerContext _context;
+        private readonly DelegationLookup _lookup;
+        private readonly bool isAccountAdmin;
 
-        public DelegationsController(MUN_Digital_SpeakerContext context)
+        public DelegationsController(MUN_Digital_SpeakerContext context, DelegationLookup lookup)
         {
             _context = context;
+            _lookup = lookup;
         }
 
         // GET: Delegations
@@ -27,7 +30,7 @@ namespace MUN_Digital_Speaker.Controllers
         {
             List<Delegation> delegations = await _context.Delegation.ToListAsync();
 
-            if (!delegations.Exists(x => x.Login.ToString() == User.Identity.Name && x.Country == "Admin"))
+            if (await _lookup.IsAdmin(User.Identity.Name))
             {
                 ViewData["messgae"] = "Not authorized to accses that page";
                 return RedirectToAction("Index", "Home");

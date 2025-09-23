@@ -30,11 +30,11 @@ namespace MUN_Digital_Speaker
         }
 
         [Authorize]
-        public async Task<bool> IsAdmin(int userLogin)
+        public async Task<bool> IsAdmin(string userLogin)
         {
             List<Delegation> delegations = await _context.Delegation.ToListAsync();
 
-            if (delegations.Exists(x => x.Login == userLogin && x.Country == "Admin"))
+            if (delegations.Exists(x => x.Login.ToString() == userLogin && x.Country == "Admin"))
             {
                 return true;
             }
