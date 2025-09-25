@@ -52,11 +52,17 @@ namespace MUN_Digital_Speaker.Controllers
         }
 
         // GET: Delegations/Details/5
+        [Authorize]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
             {
                 return NotFound();
+            }
+
+            if (!await _lookup.IsAdmin(User.Identity.Name))
+            {
+                return Unauthorized();
             }
 
             var delegation = await _context.Delegation
@@ -70,8 +76,14 @@ namespace MUN_Digital_Speaker.Controllers
         }
 
         // GET: Delegations/Create
-        public IActionResult Create()
+        [Authorize]
+        public async Task<IActionResult> Create()
         {
+            if (!await _lookup.IsAdmin(User.Identity.Name))
+            {
+                return Unauthorized();
+            }
+
             return View();
         }
 
@@ -80,8 +92,14 @@ namespace MUN_Digital_Speaker.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public async Task<IActionResult> Create([Bind("Id,Login,Key,Country,TimesSpoken,RequestedToSpeak")] Delegation delegation)
         {
+            if (!await _lookup.IsAdmin(User.Identity.Name))
+            {
+                return Unauthorized();
+            }
+
             bool isError = false;
 
             bool isDupliciteLogin = await _context.Delegation.AnyAsync(x => x.Login == delegation.Login);
@@ -111,8 +129,14 @@ namespace MUN_Digital_Speaker.Controllers
         }
 
         // GET: Delegations/Edit/5
+        [Authorize]
         public async Task<IActionResult> Edit(int? id)
         {
+            if (!await _lookup.IsAdmin(User.Identity.Name))
+            {
+                return Unauthorized();
+            }
+
             if (id == null)
             {
                 return NotFound();
@@ -131,8 +155,14 @@ namespace MUN_Digital_Speaker.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Login,Key,Country,TimesSpoken,RequestedToSpeak")] Delegation delegation)
         {
+            if (!await _lookup.IsAdmin(User.Identity.Name))
+            {
+                return Unauthorized();
+            }
+
             bool isError = false;
 
             if (id != delegation.Id)
@@ -180,8 +210,14 @@ namespace MUN_Digital_Speaker.Controllers
         }
 
         // GET: Delegations/Delete/5
+        [Authorize]
         public async Task<IActionResult> Delete(int? id)
         {
+            if (!await _lookup.IsAdmin(User.Identity.Name))
+            {
+                return Unauthorized();
+            }
+
             if (id == null)
             {
                 return NotFound();
@@ -200,8 +236,14 @@ namespace MUN_Digital_Speaker.Controllers
         // POST: Delegations/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
+            if (!await _lookup.IsAdmin(User.Identity.Name))
+            {
+                return Unauthorized();
+            }
+
             var delegation = await _context.Delegation.FindAsync(id);
             if (delegation != null)
             {
@@ -217,14 +259,25 @@ namespace MUN_Digital_Speaker.Controllers
             return _context.Delegation.Any(e => e.Id == id);
         }
 
-        public IActionResult Upload()
+        public async Task<IActionResult> Upload()
         {
+            if (!await _lookup.IsAdmin(User.Identity.Name))
+            {
+                return Unauthorized();
+            }
+
             return View();
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> Upload(UploadModel model)
         {
+            if (!await _lookup.IsAdmin(User.Identity.Name))
+            {
+                return Unauthorized();
+            }
+
             if (model.File == null)
             {
                 ViewData["Message"] = "No file selected.";
