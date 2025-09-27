@@ -30,7 +30,7 @@ namespace MUN_Digital_Speaker
         }
 
         [Authorize]
-        public async Task<bool> IsAdmin(string userLogin)
+        public async Task<bool> IsAdmin(string? userLogin)
         {
             List<Delegation> delegations = await _context.Delegation.ToListAsync();
 

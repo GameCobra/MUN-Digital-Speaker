@@ -14,28 +14,27 @@ namespace MUN_Digital_Speaker.Controllers
 {
     public class DelegationsController : Controller
     {
-        private readonly MUN_Digital_SpeakerContext _context;
+        private readonly MUN_Digital_SpeakerContext delegationsDBContext;
         private readonly DelegationLookup _lookup;
-        private readonly bool isAccountAdmin;
 
         public DelegationsController(MUN_Digital_SpeakerContext context, DelegationLookup lookup)
         {
-            _context = context;
+            delegationsDBContext = context;
             _lookup = lookup;
         }
 
-        // GET: Delegations
+        // Page allowing the admin account to view all delegations
         [Authorize]
         public async Task<IActionResult> Index()
         {
-            List<Delegation> delegations = await _context.Delegation.ToListAsync();
 
             if (await _lookup.IsAdmin(User.Identity.Name))
             {
-                ViewData["messgae"] = "Not authorized to accses that page";
-                return RedirectToAction("Index", "Home");
+                return Unauthorized();
             }
-            var firstDuplicite = delegations.GroupBy(x => x.Login)
+
+            List<Delegation> delegationsList = await delegationsDBContext.Delegation.ToListAsync();
+            var firstDuplicite = delegationsList.GroupBy(x => x.Login)
                                             .FirstOrDefault(x => x.Count() >= 2);
             //System.Diagnostics.Debug.WriteLine(firstDuplicite);
             
@@ -48,34 +47,28 @@ namespace MUN_Digital_Speaker.Controllers
                 ViewData["hasDuplicitLogins"] = null;
             }
 
-            return View(await _context.Delegation.ToListAsync());
+            return View(await delegationsDBContext.Delegation.ToListAsync());
         }
 
-        // GET: Delegations/Details/5
+        // Allows the admin account to view the specific details of an account
         [Authorize]
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
             if (!await _lookup.IsAdmin(User.Identity.Name))
             {
                 return Unauthorized();
             }
 
-            var delegation = await _context.Delegation
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (delegation == null)
+            var investigatingDelegation = await delegationsDBContext.Delegation.FirstOrDefaultAsync(m => m.Id == id);
+            if (investigatingDelegation == null)
             {
                 return NotFound();
             }
 
-            return View(delegation);
+            return View(investigatingDelegation);
         }
 
-        // GET: Delegations/Create
+        // The viewable portion of the Create page
         [Authorize]
         public async Task<IActionResult> Create()
         {
@@ -87,12 +80,10 @@ namespace MUN_Digital_Speaker.Controllers
             return View();
         }
 
-        // POST: Delegations/Create
+        // Allows the admin account to create delegations
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        [Authorize]
+        [HttpPost, ValidateAntiForgeryToken, Authorize]
         public async Task<IActionResult> Create([Bind("Id,Login,Key,Country,TimesSpoken,RequestedToSpeak")] Delegation delegation)
         {
             if (!await _lookup.IsAdmin(User.Identity.Name))
@@ -100,35 +91,31 @@ namespace MUN_Digital_Speaker.Controllers
                 return Unauthorized();
             }
 
-            bool isError = false;
-
-            bool isDupliciteLogin = await _context.Delegation.AnyAsync(x => x.Login == delegation.Login);
+            bool isDupliciteLogin = await delegationsDBContext.Delegation.AnyAsync(x => x.Login == delegation.Login);
 
             if (isDupliciteLogin)
             {
                 ModelState.AddModelError("Login", "That login already exists.");
-                isError = true;
             }
 
-            bool isDupliciteCountry = await _context.Delegation.AnyAsync(x => x.Country == delegation.Country);
+            bool isDupliciteCountry = await delegationsDBContext.Delegation.AnyAsync(x => x.Country == delegation.Country);
 
             if (isDupliciteCountry)
             {
                 ModelState.AddModelError("Country", "That country already exists.");
-                isError = true;
             }
 
 
-            if (ModelState.IsValid && !isError)
+            if (ModelState.IsValid)
             {
-                _context.Add(delegation);
-                await _context.SaveChangesAsync();
+                delegationsDBContext.Add(delegation);
+                await delegationsDBContext.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             return View(delegation);
         }
 
-        // GET: Delegations/Edit/5
+        // Allows the admin account to view the edit page
         [Authorize]
         public async Task<IActionResult> Edit(int? id)
         {
@@ -137,25 +124,18 @@ namespace MUN_Digital_Speaker.Controllers
                 return Unauthorized();
             }
 
-            if (id == null)
+            var investigatingDelegation = await delegationsDBContext.Delegation.FindAsync(id);
+            if (investigatingDelegation == null)
             {
                 return NotFound();
             }
-
-            var delegation = await _context.Delegation.FindAsync(id);
-            if (delegation == null)
-            {
-                return NotFound();
-            }
-            return View(delegation);
+            return View(investigatingDelegation);
         }
 
-        // POST: Delegations/Edit/5
+        // Allows the admin account to edit delegations
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        [Authorize]
+        [HttpPost, ValidateAntiForgeryToken, Authorize]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Login,Key,Country,TimesSpoken,RequestedToSpeak")] Delegation delegation)
         {
             if (!await _lookup.IsAdmin(User.Identity.Name))
@@ -163,35 +143,31 @@ namespace MUN_Digital_Speaker.Controllers
                 return Unauthorized();
             }
 
-            bool isError = false;
-
             if (id != delegation.Id)
             {
                 return NotFound();
             }
 
-            bool isDupliciteLogin = await _context.Delegation.AnyAsync(x => x.Id != id && x.Login == delegation.Login);
+            bool isDupliciteLogin = await delegationsDBContext.Delegation.AnyAsync(x => x.Id != id && x.Login == delegation.Login);
             
             if (isDupliciteLogin)
             {
                 ModelState.AddModelError("Login", "That login already exists.");
-                isError = true;
             }
 
-            bool isDupliciteCountry = await _context.Delegation.AnyAsync(x => x.Id != id && x.Country == delegation.Country);
+            bool isDupliciteCountry = await delegationsDBContext.Delegation.AnyAsync(x => x.Id != id && x.Country == delegation.Country);
 
             if (isDupliciteCountry)
             {
                 ModelState.AddModelError("Country", "That country already exists.");
-                isError = true;
             }
 
-            if (ModelState.IsValid && !isError)
+            if (ModelState.IsValid)
             {
                 try
                 {
-                    _context.Update(delegation);
-                    await _context.SaveChangesAsync();
+                    delegationsDBContext.Update(delegation);
+                    await delegationsDBContext.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -209,7 +185,7 @@ namespace MUN_Digital_Speaker.Controllers
             return View(delegation);
         }
 
-        // GET: Delegations/Delete/5
+        // Allows the admin account to view the delete page
         [Authorize]
         public async Task<IActionResult> Delete(int? id)
         {
@@ -223,20 +199,17 @@ namespace MUN_Digital_Speaker.Controllers
                 return NotFound();
             }
 
-            var delegation = await _context.Delegation
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (delegation == null)
+            var investigatingDelegation = await delegationsDBContext.Delegation.FirstOrDefaultAsync(m => m.Id == id);
+            if (investigatingDelegation == null)
             {
                 return NotFound();
             }
 
-            return View(delegation);
+            return View(investigatingDelegation);
         }
 
-        // POST: Delegations/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        [Authorize]
+        // Allows the admin account to delete delegations
+        [HttpPost, ActionName("Delete"), ValidateAntiForgeryToken, Authorize]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             if (!await _lookup.IsAdmin(User.Identity.Name))
@@ -244,21 +217,23 @@ namespace MUN_Digital_Speaker.Controllers
                 return Unauthorized();
             }
 
-            var delegation = await _context.Delegation.FindAsync(id);
-            if (delegation != null)
+            var investigatingDelegation = await delegationsDBContext.Delegation.FindAsync(id);
+            if (investigatingDelegation != null)
             {
-                _context.Delegation.Remove(delegation);
+                delegationsDBContext.Delegation.Remove(investigatingDelegation);
+                await delegationsDBContext.SaveChangesAsync();
             }
 
-            await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
+        // returns true if a delegation already exists
         public bool DelegationExists(int id)
         {
-            return _context.Delegation.Any(e => e.Id == id);
+            return delegationsDBContext.Delegation.Any(e => e.Id == id);
         }
 
+        // Allows the admin account to view the uploading page
         public async Task<IActionResult> Upload()
         {
             if (!await _lookup.IsAdmin(User.Identity.Name))
@@ -269,8 +244,8 @@ namespace MUN_Digital_Speaker.Controllers
             return View();
         }
 
-        [HttpPost]
-        [Authorize]
+        // Allows the admin account to upload .csv to auto populate delegations into the system
+        [HttpPost, Authorize]
         public async Task<IActionResult> Upload(UploadModel model)
         {
             if (!await _lookup.IsAdmin(User.Identity.Name))
@@ -281,13 +256,13 @@ namespace MUN_Digital_Speaker.Controllers
             if (model.File == null)
             {
                 ViewData["Message"] = "No file selected.";
-                return RedirectToAction("Index", "Delegations");
+                return View();
             }
 
             if (model.File.Length == 0)
             {
                 ViewData["Message"] = "File has no data.";
-                return RedirectToAction("Index", "Delegations");
+                return View();
             }
 
             var records = new List<string[]>();
@@ -304,13 +279,11 @@ namespace MUN_Digital_Speaker.Controllers
             for (int i = 0; i < records.Count; i++)
             {
                 Delegation parseDelegation = new Delegation { Country = records[i][0], Login = int.Parse(records[i][1]), Key = 0, RequestedToSpeak = false, TimesSpoken = 0 };
-                _context.Add(parseDelegation);
+                delegationsDBContext.Add(parseDelegation);
             }
 
-            await _context.SaveChangesAsync();
+            await delegationsDBContext.SaveChangesAsync();
             ViewData["Message"] = "Upload Succsesful";
-
-
 
             return RedirectToAction("Index", "Delegations");
 
