@@ -15,12 +15,12 @@ namespace MUN_Digital_Speaker.Controllers
     public class DelegationsController : Controller
     {
         private readonly MUN_Digital_SpeakerContext delegationsDBContext;
-        private readonly DelegationLookup _lookup;
+        DelegationLookup delLookup;
 
-        public DelegationsController(MUN_Digital_SpeakerContext context, DelegationLookup lookup)
+        public DelegationsController(MUN_Digital_SpeakerContext context)
         {
             delegationsDBContext = context;
-            _lookup = lookup;
+            delLookup = new DelegationLookup(delegationsDBContext);
         }
 
         // Page allowing the admin account to view all delegations
@@ -28,7 +28,7 @@ namespace MUN_Digital_Speaker.Controllers
         public async Task<IActionResult> Index()
         {
 
-            if (await _lookup.IsAdmin(User.Identity.Name))
+            if (!await delLookup.IsAdmin(User.Identity.Name))
             {
                 return Unauthorized();
             }
@@ -54,7 +54,7 @@ namespace MUN_Digital_Speaker.Controllers
         [Authorize]
         public async Task<IActionResult> Details(int? id)
         {
-            if (!await _lookup.IsAdmin(User.Identity.Name))
+            if (!await delLookup.IsAdmin(User.Identity.Name))
             {
                 return Unauthorized();
             }
@@ -72,7 +72,7 @@ namespace MUN_Digital_Speaker.Controllers
         [Authorize]
         public async Task<IActionResult> Create()
         {
-            if (!await _lookup.IsAdmin(User.Identity.Name))
+            if (!await delLookup.IsAdmin(User.Identity.Name))
             {
                 return Unauthorized();
             }
@@ -86,7 +86,7 @@ namespace MUN_Digital_Speaker.Controllers
         [HttpPost, ValidateAntiForgeryToken, Authorize]
         public async Task<IActionResult> Create([Bind("Id,Login,Key,Country,TimesSpoken,RequestedToSpeak")] Delegation delegation)
         {
-            if (!await _lookup.IsAdmin(User.Identity.Name))
+            if (!await delLookup.IsAdmin(User.Identity.Name))
             {
                 return Unauthorized();
             }
@@ -119,7 +119,7 @@ namespace MUN_Digital_Speaker.Controllers
         [Authorize]
         public async Task<IActionResult> Edit(int? id)
         {
-            if (!await _lookup.IsAdmin(User.Identity.Name))
+            if (!await delLookup.IsAdmin(User.Identity.Name))
             {
                 return Unauthorized();
             }
@@ -138,7 +138,7 @@ namespace MUN_Digital_Speaker.Controllers
         [HttpPost, ValidateAntiForgeryToken, Authorize]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Login,Key,Country,TimesSpoken,RequestedToSpeak")] Delegation delegation)
         {
-            if (!await _lookup.IsAdmin(User.Identity.Name))
+            if (!await delLookup.IsAdmin(User.Identity.Name))
             {
                 return Unauthorized();
             }
@@ -189,7 +189,7 @@ namespace MUN_Digital_Speaker.Controllers
         [Authorize]
         public async Task<IActionResult> Delete(int? id)
         {
-            if (!await _lookup.IsAdmin(User.Identity.Name))
+            if (!await delLookup.IsAdmin(User.Identity.Name))
             {
                 return Unauthorized();
             }
@@ -212,7 +212,7 @@ namespace MUN_Digital_Speaker.Controllers
         [HttpPost, ActionName("Delete"), ValidateAntiForgeryToken, Authorize]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (!await _lookup.IsAdmin(User.Identity.Name))
+            if (!await delLookup.IsAdmin(User.Identity.Name))
             {
                 return Unauthorized();
             }
@@ -236,7 +236,7 @@ namespace MUN_Digital_Speaker.Controllers
         // Allows the admin account to view the uploading page
         public async Task<IActionResult> Upload()
         {
-            if (!await _lookup.IsAdmin(User.Identity.Name))
+            if (!await delLookup.IsAdmin(User.Identity.Name))
             {
                 return Unauthorized();
             }
@@ -248,7 +248,7 @@ namespace MUN_Digital_Speaker.Controllers
         [HttpPost, Authorize]
         public async Task<IActionResult> Upload(UploadModel model)
         {
-            if (!await _lookup.IsAdmin(User.Identity.Name))
+            if (!await delLookup.IsAdmin(User.Identity.Name))
             {
                 return Unauthorized();
             }
