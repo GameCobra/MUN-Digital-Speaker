@@ -2,6 +2,8 @@
 using Microsoft.EntityFrameworkCore;
 using MUN_Digital_Speaker.Data;
 using MUN_Digital_Speaker.Models;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 
 namespace MUN_Digital_Speaker.Controllers
 {
@@ -9,12 +11,16 @@ namespace MUN_Digital_Speaker.Controllers
     {
         private readonly MUN_Digital_SpeakerContext _context;
         private readonly SpeakerListControlStates _speakerControl;
+        DelegationLookup delLookup;
+
 
 
         public SpeakerOrderController(MUN_Digital_SpeakerContext context, SpeakerListControlStates speakerControl)
         {
             _context = context;
             _speakerControl = speakerControl;
+            DelegationLookup delLookup;
+
         }
         public IActionResult SpeakerListAsJSON()
         {
@@ -44,14 +50,26 @@ namespace MUN_Digital_Speaker.Controllers
             return View(speakingCountries);
         }
 
-        public IActionResult SpeakerOrderDashboard()
+        [Authorize]
+        public async Task<IActionResult> SpeakerOrderDashboard()
         {
+            if (!await delLookup.IsAdmin(User.Identity.Name))
+            {
+                return Unauthorized();
+            }
+
             return View();
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> Speak()
         {
+            if (!await delLookup.IsAdmin(User.Identity.Name))
+            {
+                return Unauthorized();
+            }
+
 
             #pragma warning disable CS8619 // Nullability of reference types in value doesn't match target type.
             Delegation topContry = _context.Delegation.Where(x => x.RequestedToSpeak == true)
@@ -69,8 +87,14 @@ namespace MUN_Digital_Speaker.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> ClearSpeak()
         {
+            if (!await delLookup.IsAdmin(User.Identity.Name))
+            {
+                return Unauthorized();
+            }
+
             var delegations = await _context.Delegation.Where(d => d.RequestedToSpeak == true)
                                                        .ToListAsync();
 
@@ -85,15 +109,27 @@ namespace MUN_Digital_Speaker.Controllers
         }
 
         [HttpPost]
-        public IActionResult Lock()
+        [Authorize]
+        public async Task<IActionResult> Lock()
         {
+            if (!await delLookup.IsAdmin(User.Identity.Name))
+            {
+                return Unauthorized();
+            }
+
             _speakerControl.allowSpeakRequests = false;
             return RedirectToAction("SpeakerOrderDashboard", "SpeakerOrder");
         }
 
         [HttpPost]
-        public IActionResult Unlock()
+        [Authorize]
+        public async Task<IActionResult> Unlock()
         {
+            if (!await delLookup.IsAdmin(User.Identity.Name))
+            {
+                return Unauthorized();
+            }
+
             _speakerControl.allowSpeakRequests = true;
             return RedirectToAction("SpeakerOrderDashboard", "SpeakerOrder");
         }
