@@ -57,13 +57,13 @@
                             @if (!isLoggedIn)
                             {
                                 <li class="nav-item ms-auto">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="UserInterface" asp-action="Login">Login</a>
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="UserAccountManager" asp-action="Login">Login</a>
                                 </li>
                             }
                             else
                             {
                                 <li class="nav-item ms-auto">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="UserInterface" asp-action="Logout">@loggedInUser</a>
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="UserAccountManager" asp-action="Logout">@loggedInUser</a>
                                 </li>
                             }
                         </ul>

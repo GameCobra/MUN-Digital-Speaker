@@ -17,7 +17,7 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
     {
-        options.LoginPath = "/UserInterface/Login"; // redirect if not logged in
+        options.LoginPath = "/UserAccountManager/Login"; // redirect if not logged in
     });
 
 builder.Services.AddScoped<DelegationLookup>();

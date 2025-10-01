@@ -26,12 +26,6 @@ namespace MUN_Digital_Speaker.Controllers
             return RedirectToAction(actionName: nameof(Dashboard)); //routeValues: new {loginID = 0, key = 123}
         }
 
-        [HttpGet]
-        public IActionResult Login()
-        {
-            return View();
-        }
-
         [HttpPost]
         public async Task<IActionResult> SpeakRequest(SpeakRequest requested)
         {
@@ -79,42 +73,6 @@ namespace MUN_Digital_Speaker.Controllers
             ViewData["hasRequested"] = loggedInDelegation.RequestedToSpeak;
             ViewData["message"] = message;
             return View();
-        }
-
-        public async Task<IActionResult> Logout()
-        {
-            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            return RedirectToAction("Index", "Home");
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login(LoginModel model)
-        {
-            if (!ModelState.IsValid)
-                return View(model);
-
-            bool isValadeDelegation = _context.Delegation.Any(x => x.Login == model.Login && x.Key == model.Key);
-
-            if (isValadeDelegation)
-            {
-                var claims = new List<Claim> 
-                {
-                    new Claim(ClaimTypes.Name, model.Login.ToString())
-                };
-
-                var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-
-                await HttpContext.SignInAsync(
-                    CookieAuthenticationDefaults.AuthenticationScheme,
-                    new ClaimsPrincipal(claimsIdentity)
-                );
-
-                return RedirectToAction("Index", "Home");
-            }
-
-            ModelState.AddModelError("", "Invalid login");
-            return View(model);
         }
     }
 }
