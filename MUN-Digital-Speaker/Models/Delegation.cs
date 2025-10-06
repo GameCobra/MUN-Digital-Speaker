@@ -13,7 +13,7 @@ namespace MUN_Digital_Speaker.Models
         [Display(Name = "Has Requested To Speak")]
         public bool? RequestedToSpeak { get; set; }
 
-        //public 
+        public List<Amendment>? amendments { get; set; } 
 
     }
 }
@@ -22,6 +22,5 @@ public class Amendment
 {
     public int ResolutionID { get; set; }
     public  string? Metadata { get; set; }
-    [Required]
-    public string Change { get; set; }
+    public required string Change { get; set; }
 }

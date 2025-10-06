@@ -15,5 +15,11 @@ namespace MUN_Digital_Speaker.Data
         }
 
         public DbSet<MUN_Digital_Speaker.Models.Delegation> Delegation { get; set; } = default!;
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Delegation>()
+                .OwnsMany(d => d.amendments);
+        }
     }
 }
