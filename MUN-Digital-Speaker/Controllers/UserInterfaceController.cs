@@ -74,5 +74,20 @@ namespace MUN_Digital_Speaker.Controllers
             ViewData["message"] = message;
             return View();
         }
+
+        [Authorize]
+        [HttpPost]
+        public async Task<IActionResult> SubmitAmmendment(string change)
+        {
+            Delegation currentDelegation = await _context.Delegation.FirstAsync(x => x.Login.ToString() == User.Identity.Name);
+            if (currentDelegation.amendments == null)
+            {
+                currentDelegation.amendments = new List<Amendment>();
+            }
+            currentDelegation.amendments.Add(new Amendment { Change = change });
+            _context.Update(currentDelegation);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(actionName: nameof(Dashboard));
+        }
     }
 }
