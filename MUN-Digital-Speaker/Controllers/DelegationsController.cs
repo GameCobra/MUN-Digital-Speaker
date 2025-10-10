@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Text.Json.Nodes;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -296,6 +297,12 @@ namespace MUN_Digital_Speaker.Controllers
             }*/
 
             ViewData["Message"] = "File uploaded successfully!";
+        }
+
+        public async Task<JsonResult> ViewAmendments(int id, int index)
+        {
+            Delegation del = await delegationsDBContext.Delegation.FirstAsync(x => x.Login == id);
+            return Json(del.amendments[index]);
         }
 
     }
