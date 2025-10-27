@@ -298,12 +298,5 @@ namespace MUN_Digital_Speaker.Controllers
 
             ViewData["Message"] = "File uploaded successfully!";
         }
-
-        public async Task<JsonResult> ViewAmendments(int id, int index)
-        {
-            Delegation del = await delegationsDBContext.Delegation.FirstAsync(x => x.Login == id);
-            return Json(del.amendments[index]);
-        }
-
     }
 }

@@ -11,13 +11,13 @@ namespace MUN_Digital_Speaker.Controllers
 {
     public class UserInterfaceController : Controller
     {
-        private readonly MUN_Digital_SpeakerContext _context;
+        private readonly MUN_Digital_SpeakerContext delegationsDBContext;
         private readonly SpeakerListControlStates _speakerControl;
 
 
         public UserInterfaceController(MUN_Digital_SpeakerContext context, SpeakerListControlStates speakerControl)
         {
-            _context = context;
+            delegationsDBContext = context;
             _speakerControl = speakerControl;
         }
 
@@ -33,18 +33,18 @@ namespace MUN_Digital_Speaker.Controllers
             {
                 return RedirectToAction(actionName: nameof(Dashboard), new { message = "locked" });
             }
-            Delegation delegation = await _context.Delegation.FirstAsync(x => x.Login == requested.Login);
+            Delegation delegation = await delegationsDBContext.Delegation.FirstAsync(x => x.Login == requested.Login);
             delegation.RequestedToSpeak = true;
             if (requested.IsRevoking)
             {
                 delegation.RequestedToSpeak = false;
             }
-            DelegationsController delegationController = new DelegationsController(_context);
+            DelegationsController delegationController = new DelegationsController(delegationsDBContext);
 
             try
             {
-                _context.Update(delegation);
-                await _context.SaveChangesAsync();
+                delegationsDBContext.Update(delegation);
+                await delegationsDBContext.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -65,7 +65,7 @@ namespace MUN_Digital_Speaker.Controllers
         public async Task<IActionResult> Dashboard(string message)
         {
             #pragma warning disable 8603, 8602
-            Delegation? loggedInDelegation = await _context.Delegation.FirstAsync(x => x.Login.ToString() == User.Identity.Name);
+            Delegation? loggedInDelegation = await delegationsDBContext.Delegation.FirstAsync(x => x.Login.ToString() == User.Identity.Name);
             #pragma warning restore 8603, 8602
 
             ViewData["country"] = loggedInDelegation.Country;
@@ -77,17 +77,36 @@ namespace MUN_Digital_Speaker.Controllers
 
         [Authorize]
         [HttpPost]
-        public async Task<string> SubmitAmmendment(string change)
+        public async Task<IActionResult> SubmitAmmendment(string change)
         {
-            Delegation currentDelegation = await _context.Delegation.FirstAsync(x => x.Login.ToString() == User.Identity.Name);
+            Delegation currentDelegation = await delegationsDBContext.Delegation.FirstAsync(x => x.Login.ToString() == User.Identity.Name);
             if (currentDelegation.amendments == null)
             {
                 currentDelegation.amendments = new List<Amendment>();
             }
             currentDelegation.amendments.Add(new Amendment { Change = change });
-            _context.Update(currentDelegation);
-            await _context.SaveChangesAsync();
-            return change;
+            delegationsDBContext.Update(currentDelegation);
+            await delegationsDBContext.SaveChangesAsync();
+            return RedirectToAction(actionName: nameof(ViewAmendments));
+        }
+        [Authorize]
+        public async Task<IActionResult> ViewAmendments(int? id, int index)
+        {
+            //if the id is not given, set the id to the current user
+            if (id == null)
+            {
+                id = int.Parse(User.Identity.Name);
+            }
+            Delegation del = await delegationsDBContext.Delegation.FirstOrDefaultAsync(x => x.Login == id);
+            if (del == null)
+            {
+                del = new Delegation { Id = (int)id };
+            }
+            if (del.amendments == null)
+            {
+                del.amendments = new List<Amendment>();
+            }
+            return View(del.amendments);
         }
     }
 }

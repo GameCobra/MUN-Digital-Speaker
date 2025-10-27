@@ -1,0 +1,28 @@
+﻿@model List<MUN_Digital_Speaker.Models.Amendment>
+@{
+}
+
+<table class="table">
+@foreach (var item in Model) 
+{
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Change)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ResolutionID)
+        </td>
+    </tr>
+}
+</table>
+
+
+
+<div class="row">
+    <div class="col-md-4">
+        <form action="/UserInterface/SubmitAmmendment" method="post">
+            <input type="text" name="change">
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+</div>

@@ -17,10 +17,12 @@ namespace MUN_Digital_Speaker.Models
 
     }
 }
-
-public class Amendment
+namespace MUN_Digital_Speaker.Models
 {
-    public int ResolutionID { get; set; }
-    public  string? Metadata { get; set; }
-    public required string Change { get; set; }
+    public class Amendment
+    {
+        public int ResolutionID { get; set; }
+        public string? Metadata { get; set; }
+        public required string Change { get; set; }
+    }
 }

@@ -9,23 +9,23 @@ namespace MUN_Digital_Speaker.Controllers
 {
     public class SpeakerOrderController : Controller
     {
-        private readonly MUN_Digital_SpeakerContext _context;
+        private readonly MUN_Digital_SpeakerContext delegationsDBContext;
         private readonly SpeakerListControlStates _speakerControl;
         DelegationLookup delLookup;
 
 
 
-        public SpeakerOrderController(MUN_Digital_SpeakerContext context, SpeakerListControlStates speakerControl)
+        public SpeakerOrderController(MUN_Digital_SpeakerContext context, SpeakerListControlStates speakerControl, DelegationLookup delLook)
         {
-            _context = context;
+            delegationsDBContext = context;
             _speakerControl = speakerControl;
-            DelegationLookup delLookup;
+            delLookup = delLook;
 
         }
         public IActionResult SpeakerListAsJSON()
         {
             #pragma warning disable CS8619 // Nullability of reference types in value doesn't match target type.
-            List<string> speakingCountries = _context.Delegation.Where(x => x.RequestedToSpeak == true)
+            List<string> speakingCountries = delegationsDBContext.Delegation.Where(x => x.RequestedToSpeak == true)
                                .OrderBy(x => x.TimesSpoken)
                                .ThenBy(x => x.Login)
                                .Select(x => x.Country).ToList();
@@ -40,7 +40,7 @@ namespace MUN_Digital_Speaker.Controllers
         public IActionResult Index()
         {
             #pragma warning disable CS8619 // Nullability of reference types in value doesn't match target type.
-            List<string> speakingCountries = _context.Delegation.Where(x => x.RequestedToSpeak == true)
+            List<string> speakingCountries = delegationsDBContext.Delegation.Where(x => x.RequestedToSpeak == true)
                                .OrderBy(x =>  x.TimesSpoken)
                                .ThenBy(x => x.Login)
                                .Select(x => x.Country).ToList();
@@ -72,7 +72,7 @@ namespace MUN_Digital_Speaker.Controllers
 
 
             #pragma warning disable CS8619 // Nullability of reference types in value doesn't match target type.
-            Delegation topContry = _context.Delegation.Where(x => x.RequestedToSpeak == true)
+            Delegation topContry = delegationsDBContext.Delegation.Where(x => x.RequestedToSpeak == true)
                                .OrderBy(x => x.TimesSpoken)
                                .ThenBy(x => x.Login)
                                .First();
@@ -81,7 +81,7 @@ namespace MUN_Digital_Speaker.Controllers
             topContry.TimesSpoken += 1;
             topContry.RequestedToSpeak = false;
 
-            await _context.SaveChangesAsync();
+            await delegationsDBContext.SaveChangesAsync();
 
             return RedirectToAction("SpeakerOrderDashboard", "SpeakerOrder");
         }
@@ -95,7 +95,7 @@ namespace MUN_Digital_Speaker.Controllers
                 return Unauthorized();
             }
 
-            var delegations = await _context.Delegation.Where(d => d.RequestedToSpeak == true)
+            var delegations = await delegationsDBContext.Delegation.Where(d => d.RequestedToSpeak == true)
                                                        .ToListAsync();
 
             foreach (var delegation in delegations)
@@ -103,7 +103,7 @@ namespace MUN_Digital_Speaker.Controllers
                 delegation.RequestedToSpeak = false;
             }
 
-            await _context.SaveChangesAsync();
+            await delegationsDBContext.SaveChangesAsync();
 
             return RedirectToAction("SpeakerOrderDashboard", "SpeakerOrder");
         }

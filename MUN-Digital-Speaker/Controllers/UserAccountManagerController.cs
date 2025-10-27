@@ -9,13 +9,13 @@ namespace MUN_Digital_Speaker.Controllers
 {
     public class UserAccountManagerController : Controller
     {
-        private readonly MUN_Digital_SpeakerContext _context;
+        private readonly MUN_Digital_SpeakerContext delegationsDBContext;
         private readonly SpeakerListControlStates _speakerControl;
 
 
         public UserAccountManagerController(MUN_Digital_SpeakerContext context, SpeakerListControlStates speakerControl)
         {
-            _context = context;
+            delegationsDBContext = context;
             _speakerControl = speakerControl;
         }
 
@@ -32,7 +32,7 @@ namespace MUN_Digital_Speaker.Controllers
             if (!ModelState.IsValid)
                 return View(model);
 
-            bool isValadeDelegation = _context.Delegation.Any(x => x.Login == model.Login && x.Key == model.Key);
+            bool isValadeDelegation = delegationsDBContext.Delegation.Any(x => x.Login == model.Login && x.Key == model.Key);
 
             if (isValadeDelegation)
             {
