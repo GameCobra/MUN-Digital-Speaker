@@ -15,9 +15,13 @@ namespace MUN_Digital_Speaker.Controllers
 {
     public class DelegationsController : Controller
     {
+        // Context for the central database
         private readonly MUN_Digital_SpeakerContext delegationsDBContext;
+
+        // Helper function to look up delegations
         DelegationLookup delLookup;
 
+        // Init Function
         public DelegationsController(MUN_Digital_SpeakerContext context)
         {
             delegationsDBContext = context;
@@ -28,25 +32,41 @@ namespace MUN_Digital_Speaker.Controllers
         [Authorize]
         public async Task<IActionResult> Index()
         {
-
-            if (!await delLookup.IsAdmin(User.Identity.Name))
+            bool isAdmin = await delLookup.IsAdmin(User.Identity.Name);
+            if (!isAdmin)
             {
                 return Unauthorized();
             }
 
             List<Delegation> delegationsList = await delegationsDBContext.Delegation.ToListAsync();
-            var firstDuplicite = delegationsList.GroupBy(x => x.Login)
-                                            .FirstOrDefault(x => x.Count() >= 2);
-            //System.Diagnostics.Debug.WriteLine(firstDuplicite);
+            var DupliciteLoginValues = delegationsList.GroupBy(x => x.Login)
+                                                .Where(x => x.Count() > 1)
+                                                .Select(x => x.Key);
+            //System.Diagnostics.Debug.WriteLine("DUPLICIT >> " + firstDuplicite.ToList());
             
-            if (firstDuplicite != null)
+            if (DupliciteLoginValues.Count() > 0)
             {
-                ViewData["hasDuplicitLogins"] = firstDuplicite.Key;
+                ViewData["DuplicitLogins"] = DupliciteLoginValues.ToList();
             }
             else
             {
-                ViewData["hasDuplicitLogins"] = null;
+                ViewData["DuplicitLogins"] = null;
             }
+
+            var DupliciteContryValues = delegationsList.GroupBy(x => x.Country)
+                                    .Where(x => x.Count() > 1)
+                                    .Select(x => x.Key);
+            //System.Diagnostics.Debug.WriteLine("DUPLICIT >> " + firstDuplicite.ToList());
+
+            if (DupliciteContryValues.Count() > 0)
+            {
+                ViewData["DuplicitContries"] = DupliciteContryValues.ToList();
+            }
+            else
+            {
+                ViewData["DuplicitContries"] = null;
+            }
+
 
             return View(await delegationsDBContext.Delegation.ToListAsync());
         }
@@ -149,14 +169,14 @@ namespace MUN_Digital_Speaker.Controllers
                 return NotFound();
             }
 
-            bool isDupliciteLogin = await delegationsDBContext.Delegation.AnyAsync(x => x.Id != id && x.Login == delegation.Login);
+            bool isDupliciteLogin = await delegationsDBContext.Delegation.AsNoTracking().AnyAsync(x => x.Id != id && x.Login == delegation.Login);
             
             if (isDupliciteLogin)
             {
                 ModelState.AddModelError("Login", "That login already exists.");
             }
 
-            bool isDupliciteCountry = await delegationsDBContext.Delegation.AnyAsync(x => x.Id != id && x.Country == delegation.Country);
+            bool isDupliciteCountry = await delegationsDBContext.Delegation.AsNoTracking().AnyAsync(x => x.Id != id && x.Country == delegation.Country);
 
             if (isDupliciteCountry)
             {

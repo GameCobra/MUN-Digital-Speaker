@@ -2,7 +2,9 @@
 
 @{
     ViewData["Title"] = "Index";
-    int? hasDuplicitLogins = (int?)@ViewData["hasDuplicitLogins"];
+    List<int>? DuplicitLogins = (List<int>?)@ViewData["DuplicitLogins"];
+    List<string>? DuplicitContries = (List<string>?)@ViewData["DuplicitContries"];
+
 }
 
 <h1>Index</h1>
@@ -36,10 +38,19 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Country)
+                    @if (DuplicitContries != null && DuplicitContries.Contains(item.Country))
+                {
+                    <a style="color: red;">
+                        @Html.DisplayFor(modelItem => item.Country)
+                    </a>
+                }
+                else
+                {
+                    @Html.DisplayFor(modelItem => item.Country)
+                }
             </td>
             <td>
-                @if (hasDuplicitLogins == item.Login)
+                @if (DuplicitLogins != null && DuplicitLogins.Contains(item.Login))
                 {
                     <a style="color: red;">
                     @Html.DisplayFor(modelItem => item.Login)
@@ -70,7 +81,9 @@
 </table>
 
 
-@if (hasDuplicitLogins != null)
-{
-    <b style="color:red;">! The login '@hasDuplicitLogins' is shared by multiple instances !</b>
+@{
+    //if (DuplicitLogins != null)
+    //{
+    //    <b style="color:red;">! The login '@hasDuplicitLogins' is shared by multiple instances !</b>
+    //}
 }
