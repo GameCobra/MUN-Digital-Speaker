@@ -38,7 +38,7 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                    @if (DuplicitContries != null && DuplicitContries.Contains(item.Country))
+                @if (DuplicitContries != null && DuplicitContries.Contains(item.Country))
                 {
                     <a style="color: red;">
                         @Html.DisplayFor(modelItem => item.Country)

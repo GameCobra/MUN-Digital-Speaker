@@ -1,7 +1,7 @@
 ﻿@model List<MUN_Digital_Speaker.Models.Amendment>
 @{
 }
-
+<!--
 <table class="table">
 @foreach (var item in Model) 
 {
@@ -15,6 +15,29 @@
     </tr>
 }
 </table>
+       -->
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-12 col-md-9">
+
+            <button class="btn btn-primary mb-2 w-100"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#myCollapse">
+                Toggle text
+            </button>
+
+            <div class="collapse" id="myCollapse">
+                <div class="card card-body">
+                    This is the collapsible text.
+                    It spans most of the screen using Bootstrap’s grid.
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
 
 
 
