@@ -90,23 +90,49 @@ namespace MUN_Digital_Speaker.Controllers
             return RedirectToAction(actionName: nameof(ViewAmendments));
         }
         [Authorize]
-        public async Task<IActionResult> ViewAmendments(int? id, int index)
+        public async Task<IActionResult> ViewAmendments()
         {
+            List<Resolution> resolutions = new List<Resolution>();
+            //Just ignore the greyed out bit, it works fine
+            resolutions.Add(new Resolution() { ID = 0, name = "AI"} );
+            resolutions.Add(new Resolution() { ID = 1, name = "NOT AI" });
+
+            List<Delegation> delegations = await delegationsDBContext.Delegation.ToListAsync();
+
+            ResolutionDelegationViewModel viewModel = new ResolutionDelegationViewModel()
+            {
+                resolutions = resolutions,
+                delegations = delegations
+            };
+
+            System.Diagnostics.Debug.WriteLine("VIEW MODEL >> " + viewModel.resolutions[0].name);
+
+            return View(viewModel);
+
+
+            //NOTE: may want to add the ability to see other delegations ammendments
+            //This code was that, probably
+            /*
             //if the id is not given, set the id to the current user
             if (id == null)
             {
                 id = int.Parse(User.Identity.Name);
             }
+            
+            
+            
             Delegation del = await delegationsDBContext.Delegation.FirstOrDefaultAsync(x => x.Login == id);
+            
             if (del == null)
             {
                 del = new Delegation { Id = (int)id };
             }
+            
             if (del.amendments == null)
             {
                 del.amendments = new List<Amendment>();
             }
-            return View(del.amendments);
+            */
         }
     }
 }
