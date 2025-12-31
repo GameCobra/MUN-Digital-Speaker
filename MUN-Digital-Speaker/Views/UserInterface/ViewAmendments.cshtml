@@ -19,7 +19,7 @@
        -->
 @foreach (var item in Model.resolutions)
 {
-    string target = "#" + item.name;
+    string target = "#" + item.ID;
 
     <div class="container mt-4">
         <div class="row justify-content-center">
@@ -29,13 +29,27 @@
                 type="button"
                 data-bs-toggle="collapse"
                 data-bs-target=@target>
-                    @item.name
+                    @item.Name
                 </button>
 
-                <div class="collapse" id=@item.name>
+                <div class="collapse" id=@item.ID>
                     <div class="card card-body">
-                        This is the collapsible text.
-                        It spans most of the screen using Bootstrap’s grid.
+                        <a href=@item.Link>(View as image)</a>
+                        <br>
+                        <a>@item.Text</a>
+                        <br>
+
+                        <div class="row">
+                            <div class="col-md-4">
+                                <form action="/UserInterface/SubmitAmmendment" method="post">
+                                    <input type="text" name="change">
+                                    <input type="hidden" name="resoltuionID" value=@item.ID />
+                                    <button type="submit">Submit</button>
+                                </form>
+                            </div>
+                        </div>
+
+
                     </div>
                 </div>
 
@@ -44,12 +58,3 @@
     </div>
 }
 
-
-<div class="row">
-    <div class="col-md-4">
-        <form action="/UserInterface/SubmitAmmendment" method="post">
-            <input type="text" name="change">
-            <button type="submit">Submit</button>
-        </form>
-    </div>
-</div>

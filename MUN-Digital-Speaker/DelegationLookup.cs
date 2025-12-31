@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using MUN_Digital_Speaker.Data;
 using MUN_Digital_Speaker.Models;
+using System.Text.Json;
 
 namespace MUN_Digital_Speaker
 {
@@ -41,5 +42,15 @@ namespace MUN_Digital_Speaker
 
             return false;
         }
+
+        public async Task<List<Resolution>> LoadResolutionsAsync()
+        {
+            var path = Path.Combine("wwwroot/Resolutions", "ResolutionJSON.json");
+
+            var json = await System.IO.File.ReadAllTextAsync(path);
+
+            return JsonSerializer.Deserialize<List<Resolution>>(json);
+        }
+
     }
 }

@@ -14,11 +14,15 @@ namespace MUN_Digital_Speaker.Controllers
         private readonly MUN_Digital_SpeakerContext delegationsDBContext;
         private readonly SpeakerListControlStates _speakerControl;
 
+        DelegationLookup delLookup;
+
 
         public UserInterfaceController(MUN_Digital_SpeakerContext context, SpeakerListControlStates speakerControl)
         {
             delegationsDBContext = context;
             _speakerControl = speakerControl;
+            delLookup = new DelegationLookup(delegationsDBContext);
+
         }
 
         public IActionResult Index()
@@ -77,14 +81,14 @@ namespace MUN_Digital_Speaker.Controllers
 
         [Authorize]
         [HttpPost]
-        public async Task<IActionResult> SubmitAmmendment(string change)
+        public async Task<IActionResult> SubmitAmmendment(string change, int resoltuionID)
         {
             Delegation currentDelegation = await delegationsDBContext.Delegation.FirstAsync(x => x.Login.ToString() == User.Identity.Name);
             if (currentDelegation.amendments == null)
             {
                 currentDelegation.amendments = new List<Amendment>();
             }
-            currentDelegation.amendments.Add(new Amendment { Change = change });
+            currentDelegation.amendments.Add(new Amendment { Change = change, ResolutionID = resoltuionID });
             delegationsDBContext.Update(currentDelegation);
             await delegationsDBContext.SaveChangesAsync();
             return RedirectToAction(actionName: nameof(ViewAmendments));
@@ -92,20 +96,21 @@ namespace MUN_Digital_Speaker.Controllers
         [Authorize]
         public async Task<IActionResult> ViewAmendments()
         {
-            List<Resolution> resolutions = new List<Resolution>();
+            List<Resolution> resolutions = await delLookup.LoadResolutionsAsync();
             //Just ignore the greyed out bit, it works fine
-            resolutions.Add(new Resolution() { ID = 0, name = "AI"} );
-            resolutions.Add(new Resolution() { ID = 1, name = "NOT AI" });
 
-            List<Delegation> delegations = await delegationsDBContext.Delegation.ToListAsync();
+            //resolutions.Add(new Resolution() { ID = 0, Name = "AI", Link="www.AI", Text="We want AI"} );
+            //resolutions.Add(new Resolution() { ID = 1, Name = "NOT AI", Text="www.NOTAI", Link="NO AI"});
+
+            Delegation delegation = await delegationsDBContext.Delegation.FirstOrDefaultAsync(x => x.Login.ToString() == User.Identity.Name);
 
             ResolutionDelegationViewModel viewModel = new ResolutionDelegationViewModel()
             {
                 resolutions = resolutions,
-                delegations = delegations
+                delegations = delegation
             };
 
-            System.Diagnostics.Debug.WriteLine("VIEW MODEL >> " + viewModel.resolutions[0].name);
+            //System.Diagnostics.Debug.WriteLine("VIEW MODEL >> " + viewModel.resolutions[0].Name);
 
             return View(viewModel);
 
