@@ -1,22 +1,7 @@
 ﻿@model MUN_Digital_Speaker.Models.ResolutionDelegationViewModel
 @{
 }
-<!--
-<table class="table">
-@{//foreach (var item in Model.delegations) 
-/*
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Change)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.ResolutionID)
-        </td>
-    </tr>
-    */
-}
-</table>
-       -->
+
 @foreach (var item in Model.resolutions)
 {
     string target = "#" + item.ID;
@@ -34,10 +19,12 @@
 
                 <div class="collapse" id=@item.ID>
                     <div class="card card-body">
+
                         <a href=@item.Link>(View as image)</a>
                         <br>
                         <a>@item.Text</a>
                         <br>
+
 
                         <div class="row">
                             <div class="col-md-4">
@@ -48,6 +35,12 @@
                                 </form>
                             </div>
                         </div>
+
+                        <br>
+                        @foreach (var amendment in Model.delegation.amendments.FindAll(x => x.ResolutionID == item.ID))
+                        {
+                            <a>@amendment.Change</a>
+                        }
 
 
                     </div>

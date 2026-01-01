@@ -107,7 +107,7 @@ namespace MUN_Digital_Speaker.Controllers
             ResolutionDelegationViewModel viewModel = new ResolutionDelegationViewModel()
             {
                 resolutions = resolutions,
-                delegations = delegation
+                delegation = delegation
             };
 
             //System.Diagnostics.Debug.WriteLine("VIEW MODEL >> " + viewModel.resolutions[0].Name);

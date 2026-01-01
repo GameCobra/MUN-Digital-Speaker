@@ -2,7 +2,7 @@
 {
     public class ResolutionDelegationViewModel
     {
-        public required Delegation delegations { get; set; }
+        public required Delegation delegation { get; set; }
         public required List<Resolution> resolutions { get; set; }
     }
 }
