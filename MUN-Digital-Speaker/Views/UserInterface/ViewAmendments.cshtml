@@ -25,7 +25,7 @@
                         <a>@item.Text</a>
                         <br>
 
-
+                        <!--
                         <div class="row">
                             <div class="col-md-4">
                                 <form action="/UserInterface/SubmitAmmendment" method="post">
@@ -35,6 +35,44 @@
                                 </form>
                             </div>
                         </div>
+                        -->
+
+
+                        <button type="button" class="btn btn-success col-md-3" data-bs-toggle="modal" data-bs-target=@("#" + "Popup" + item.ID)>Create Amendment</button>
+
+                        <div class="modal fade" id=@("Popup" + item.ID) tabindex="-1" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title">@("Submit amendment for " + item.Name)</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <form action="/UserInterface/SubmitAmmendment" method="post">
+
+                                        <div class="modal-body">
+                                                <div class="form-group">
+                                                    <label for="clause-number" class="col-form-label">Clause Number:</label>
+                                                    <input type="text" class="form-control" name="clause-number"> <!-- NEED CLAUSE # VAR-->
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="change" class="col-form-label">Details:</label>
+                                                    <textarea class="form-control" name="change"></textarea>
+                                                </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                            <button type="submit" class="btn btn-primary">Submit</button>
+                                        </div>
+                                    </form>
+
+                                </div>
+                            </div>
+                        </div>
+
+
+
+
+
 
                         <br>
                         @foreach (var amendment in Model.delegation.amendments.FindAll(x => x.ResolutionID == item.ID))
