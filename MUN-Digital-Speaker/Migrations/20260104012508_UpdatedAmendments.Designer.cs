@@ -3,6 +3,7 @@ using MUN_Digital_Speaker.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace MUN_Digital_Speaker.Migrations
 {
     [DbContext(typeof(MUN_Digital_SpeakerContext))]
-    partial class MUN_Digital_SpeakerContextModelSnapshot : ModelSnapshot
+    [Migration("20260104012508_UpdatedAmendments")]
+    partial class UpdatedAmendments
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

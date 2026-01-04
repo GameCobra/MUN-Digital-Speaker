@@ -81,14 +81,14 @@ namespace MUN_Digital_Speaker.Controllers
 
         [Authorize]
         [HttpPost]
-        public async Task<IActionResult> SubmitAmmendment(string change, int resoltuionID)
+        public async Task<IActionResult> SubmitAmmendment(string change, int resoltuionID, string? ClauseNumber)
         {
             Delegation currentDelegation = await delegationsDBContext.Delegation.FirstAsync(x => x.Login.ToString() == User.Identity.Name);
             if (currentDelegation.amendments == null)
             {
                 currentDelegation.amendments = new List<Amendment>();
             }
-            currentDelegation.amendments.Add(new Amendment { Change = change, ResolutionID = resoltuionID });
+            currentDelegation.amendments.Add(new Amendment { Change = change, ResolutionID = resoltuionID, ClauseNumber = ClauseNumber});
             delegationsDBContext.Update(currentDelegation);
             await delegationsDBContext.SaveChangesAsync();
             return RedirectToAction(actionName: nameof(ViewAmendments));
@@ -97,10 +97,6 @@ namespace MUN_Digital_Speaker.Controllers
         public async Task<IActionResult> ViewAmendments()
         {
             List<Resolution> resolutions = await delLookup.LoadResolutionsAsync();
-            //Just ignore the greyed out bit, it works fine
-
-            //resolutions.Add(new Resolution() { ID = 0, Name = "AI", Link="www.AI", Text="We want AI"} );
-            //resolutions.Add(new Resolution() { ID = 1, Name = "NOT AI", Text="www.NOTAI", Link="NO AI"});
 
             Delegation delegation = await delegationsDBContext.Delegation.FirstOrDefaultAsync(x => x.Login.ToString() == User.Identity.Name);
 
