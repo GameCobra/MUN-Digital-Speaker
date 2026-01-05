@@ -77,7 +77,7 @@
                         <br>
                         @foreach (var amendment in Model.delegation.amendments.FindAll(x => x.ResolutionID == item.ID))
                         {
-                            <a>@amendment.Change</a>
+                            <a>@(amendment.ClauseNumber + " --- " + amendment.Change)</a>
                         }
 
 
