@@ -69,16 +69,43 @@
                             </div>
                         </div>
 
-
-
-
-
-
                         <br>
-                        @foreach (var amendment in Model.delegation.amendments.FindAll(x => x.ResolutionID == item.ID))
-                        {
-                            <a>@(amendment.ClauseNumber + " --- " + amendment.Change)</a>
-                        }
+
+                        <div class="col-12 col-md-6">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            Clause Number
+                                        </th>
+                                        <th>
+                                            Amendment
+                                        </th>
+                                        <th>
+                                            
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                    @foreach (var amendment in Model.delegation.amendments.FindAll(x => x.ResolutionID == item.ID))
+                                    {
+                                        <tr>
+                                            <td>
+                                                @amendment.ClauseNumber
+                                            </td>
+                                            <td>
+                                                @amendment.Change
+                                            </td>
+                                            <td>
+                                                Delete
+                                            </td>
+                                        </tr>
+
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
 
 
                     </div>
