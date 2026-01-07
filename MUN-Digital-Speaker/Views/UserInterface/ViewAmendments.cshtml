@@ -98,7 +98,12 @@
                                                 @amendment.Change
                                             </td>
                                             <td>
-                                                Delete
+                                                <form action="/UserInterface/DeleteResolution" method="post">
+                                                    <input type="hidden" name="delegationID" value=@Model.delegation.Id />
+                                                    <input type="hidden" name="change" value=@amendment.Change />
+
+                                                    <button class="btn btn-danger">Deleat</button>
+                                                </form>
                                             </td>
                                         </tr>
 
