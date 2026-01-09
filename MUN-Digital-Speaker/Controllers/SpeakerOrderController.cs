@@ -37,7 +37,8 @@ namespace MUN_Digital_Speaker.Controllers
 
 
 
-        public IActionResult Index()
+        public IActionResult Index(int mode) 
+        // 0 = resolution order list, 1 = amendment order list, 2 = break screen
         {
             #pragma warning disable CS8619 // Nullability of reference types in value doesn't match target type.
             List<string> speakingCountries = delegationsDBContext.Delegation.Where(x => x.RequestedToSpeak == true)
