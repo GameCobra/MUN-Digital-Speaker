@@ -37,19 +37,25 @@ namespace MUN_Digital_Speaker.Controllers
 
 
 
-        public IActionResult Index(int mode) 
-        // 0 = resolution order list, 1 = amendment order list, 2 = break screen
+        public IActionResult Index() 
         {
-            #pragma warning disable CS8619 // Nullability of reference types in value doesn't match target type.
+            //Will be a home page for generating the screens
+            return View();
+        }
+
+        public IActionResult ViewSpeakerOrder()
+        {
+#pragma warning disable CS8619 // Nullability of reference types in value doesn't match target type.
             List<string> speakingCountries = delegationsDBContext.Delegation.Where(x => x.RequestedToSpeak == true)
-                               .OrderBy(x =>  x.TimesSpoken)
+                               .OrderBy(x => x.TimesSpoken)
                                .ThenBy(x => x.Login)
                                .Select(x => x.Country).ToList();
-            #pragma warning restore CS8619 // Nullability of reference types in value doesn't match target type.
+#pragma warning restore CS8619 // Nullability of reference types in value doesn't match target type.
 
             //ViewData["displayList"] = speakingCountries;
             return View(speakingCountries);
         }
+
 
         [Authorize]
         public async Task<IActionResult> SpeakerOrderDashboard()
