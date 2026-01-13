@@ -126,6 +126,8 @@ namespace MUN_Digital_Speaker.Controllers
                 ModelState.AddModelError("Country", "That country already exists.");
             }
 
+            delegation.AmendmentPoints = 0;
+
 
             if (ModelState.IsValid)
             {

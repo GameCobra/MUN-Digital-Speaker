@@ -35,6 +35,24 @@ namespace MUN_Digital_Speaker.Controllers
             return Json(speakingCountries);
         }
 
+        public IActionResult AmendmentListAsJSON()
+        {
+            int currentResoluton = _speakerControl.CurrentResolution;
+
+            #pragma warning disable CS8619 // Nullability of reference types in value doesn't match target type.
+
+            List<String> speakingCountries = delegationsDBContext.Delegation
+                               .OrderBy(x => x.AmendmentPoints)
+                               .ThenBy(x => x.Login)
+                               //.Where(x => x.amendments != null && x.amendments.Count() > 0)
+                               .Where(x => x.amendments.Any(y => y.ResolutionID == currentResoluton))
+                               .Select(x => x.Country).ToList();
+        #pragma warning restore CS8619 // Nullability of reference types in value doesn't match target type.
+
+            //ViewData["displayList"] = speakingCountries;
+            return Json(speakingCountries);
+        }
+
 
 
         public IActionResult Index() 
@@ -45,15 +63,16 @@ namespace MUN_Digital_Speaker.Controllers
 
         public IActionResult ViewSpeakerOrder()
         {
-#pragma warning disable CS8619 // Nullability of reference types in value doesn't match target type.
-            List<string> speakingCountries = delegationsDBContext.Delegation.Where(x => x.RequestedToSpeak == true)
-                               .OrderBy(x => x.TimesSpoken)
-                               .ThenBy(x => x.Login)
-                               .Select(x => x.Country).ToList();
-#pragma warning restore CS8619 // Nullability of reference types in value doesn't match target type.
+            List<string> emptySpeakingCountries = [""];
 
-            //ViewData["displayList"] = speakingCountries;
-            return View(speakingCountries);
+            return View(emptySpeakingCountries);
+        }
+
+        public IActionResult ViewAmendmentOrder()
+        {
+            List<string> emptySpeakingCountries = [""];
+
+            return View(emptySpeakingCountries);
         }
 
 

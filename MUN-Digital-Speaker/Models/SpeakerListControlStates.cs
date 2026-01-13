@@ -3,5 +3,7 @@
     public class SpeakerListControlStates
     {
         public bool allowSpeakRequests {get; set;}
+
+        public int CurrentResolution { get; set; }
     }
 }

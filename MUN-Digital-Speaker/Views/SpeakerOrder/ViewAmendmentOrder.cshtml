@@ -1,0 +1,35 @@
+﻿@model List<string>
+@{
+    ViewData["Title"] = "Display";
+    ViewData["HideNavbar"] = true;
+}
+
+<script>
+    async function fetchData() {
+        const response = await fetch('/SpeakerOrder/AmendmentListAsJSON');
+        const data = await response.json();
+
+        const orderElement = document.getElementsByClassName("speakerOrder");
+        orderElement[0].innerHTML = '';
+        for (let i = 0; i < data.length; i++)
+        {
+            const item = document.createElement("li");
+            item.innerHTML = data[i];
+            orderElement[0].appendChild(item);
+        }
+    }
+
+    // refresh every 5 seconds
+    setInterval(fetchData, 5000);
+    fetchData(); // run once on page load
+</script>
+
+<ol class="speakerOrder">
+<!-- @for (int i = 0; i < Model.Count; i++)
+{
+    <li>
+        @Model[i]
+    </li>
+    }
+-->
+</ol>

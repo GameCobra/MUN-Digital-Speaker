@@ -10,6 +10,8 @@ namespace MUN_Digital_Speaker.Models
         public string? Country { get; set; }
         [Display(Name = "Times Spoken")]
         public int? TimesSpoken { get; set; }
+        [Display(Name = "Amendment Points")]
+        public int? AmendmentPoints { get; set; }
         [Display(Name = "Has Requested To Speak")]
         public bool? RequestedToSpeak { get; set; }
 
