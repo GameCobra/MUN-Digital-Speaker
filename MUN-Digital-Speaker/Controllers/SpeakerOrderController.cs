@@ -98,16 +98,20 @@ namespace MUN_Digital_Speaker.Controllers
 
 
             #pragma warning disable CS8619 // Nullability of reference types in value doesn't match target type.
-            Delegation topContry = delegationsDBContext.Delegation.Where(x => x.RequestedToSpeak == true)
+            Delegation? topContry = delegationsDBContext.Delegation.Where(x => x.RequestedToSpeak == true)
                                .OrderBy(x => x.TimesSpoken)
                                .ThenBy(x => x.Login)
-                               .First();
+                               .FirstOrDefault();
             #pragma warning restore CS8619 // Nullability of reference types in value doesn't match target type.
 
-            topContry.TimesSpoken += 1;
-            topContry.RequestedToSpeak = false;
 
-            await delegationsDBContext.SaveChangesAsync();
+            if (topContry != null)
+            {
+                topContry.TimesSpoken += 1;
+                topContry.RequestedToSpeak = false;
+
+                await delegationsDBContext.SaveChangesAsync();
+            }
 
             return RedirectToAction("SpeakerOrderDashboard", "SpeakerOrder");
         }

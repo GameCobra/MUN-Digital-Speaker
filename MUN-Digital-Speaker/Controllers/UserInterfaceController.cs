@@ -62,7 +62,7 @@ namespace MUN_Digital_Speaker.Controllers
                 }
             }
 
-            return RedirectToAction(actionName: nameof(Dashboard), new {message = "succsesful"});
+            return RedirectToAction(actionName: nameof(Dashboard), new {message = "Successfully requested to speak" });
         }
 
         [Authorize]
@@ -81,8 +81,13 @@ namespace MUN_Digital_Speaker.Controllers
 
         [Authorize]
         [HttpPost]
-        public async Task<IActionResult> SubmitAmmendment(string change, int resoltuionID, string? ClauseNumber)
+        public async Task<IActionResult> SubmitAmmendment(string? change, int resoltuionID, string? ClauseNumber)
         {
+            if (change == null || ClauseNumber == null)
+            {
+                return RedirectToAction(actionName: nameof(ViewAmendments));
+            }
+
             Delegation currentDelegation = await delegationsDBContext.Delegation.FirstAsync(x => x.Login.ToString() == User.Identity.Name);
             if (currentDelegation.amendments == null)
             {

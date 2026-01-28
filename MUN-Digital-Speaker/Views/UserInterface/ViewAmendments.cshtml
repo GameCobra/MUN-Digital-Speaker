@@ -20,7 +20,7 @@
                 <div class="collapse" id=@item.ID>
                     <div class="card card-body">
 
-                        <a href=@item.Link>(View as image)</a>
+                        <a href=@item.Link>(View as PDF)</a>
                         <br>
                         <a>@item.Text</a>
                         <br>
@@ -58,6 +58,7 @@
                                                     <label for="change" class="col-form-label">Details:</label>
                                                     <textarea class="form-control" name="change"></textarea>
                                                 </div>
+                                                <input type="hidden" name="resoltuionID" value=@item.ID />
                                         </div>
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -102,7 +103,7 @@
                                                     <input type="hidden" name="delegationID" value=@Model.delegation.Id />
                                                     <input type="hidden" name="change" value=@amendment.Change />
 
-                                                    <button class="btn btn-danger">Deleat</button>
+                                                    <button class="btn btn-danger">Delete</button>
                                                 </form>
                                             </td>
                                         </tr>
