@@ -82,11 +82,28 @@
             </nav>
         </header>
     }
-    <div class="container">
-        <main role="main" class="pb-3">
+
+    <!-- Typical -->
+    @if (((bool?)ViewData["NoContainer"]).GetValueOrDefault() == false)
+    {
+        <div class="container">
+            <main role="main" class="pb-3">
             @RenderBody()
-        </main>
-    </div>
+            </main>
+        </div>
+    }
+
+    <!-- Specific variation for the speaker order -->
+    @if (((bool?)ViewData["NoContainer"]).GetValueOrDefault() == true)
+    {
+        <div>
+            <main role="main" class="pb-3">
+                @RenderBody()
+            </main>
+        </div>
+    }
+
+
     @if (((bool?)ViewData["HideNavbar"]).GetValueOrDefault() == false)
     {
         <footer class="border-top footer text-muted">

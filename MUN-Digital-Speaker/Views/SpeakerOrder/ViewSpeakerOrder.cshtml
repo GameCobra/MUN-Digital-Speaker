@@ -2,10 +2,20 @@
 @{
     ViewData["Title"] = "Display";
     ViewData["HideNavbar"] = true;
+    ViewData["NoContainer"] = true;
 }
 
-<body style="background-color:black;"></body>
+<style>
+    .speakerOrder {
+        width: fit-content; /* shrink to content width */
+        margin: 0 auto; /* center horizontally */
+        text-align: left; /* keep numbers aligned */
+        list-style-position: outside;
+        padding-left: 1.4em; /* controls number spacing */
+    }
+</style>
 
+<body style="background-color:black;"></body>
 <script>
     async function fetchData() {
         const response = await fetch('/SpeakerOrder/SpeakerListAsJSON');
@@ -26,12 +36,24 @@
     fetchData(); // run once on page load
 </script>
 
-<ol class="speakerOrder" style="color:white">
-<!-- @for (int i = 0; i < Model.Count; i++)
-{
-    <li>
-        @Model[i]
-    </li>
-    }
--->
-</ol>
+<div class="fs-4" style="color:white">
+    <div class="row">
+
+        <!-- Amendment order -->
+        <div class="col-2 text-center mx-0">
+            1. Yes
+        </div>
+        
+        <!-- Debater Order -->
+        <div class="col-2 mx-0">
+            <div class="fs-3 text-center"><b>Debators</b></div>
+            <ol class="speakerOrder" style="color:white"></ol>
+        </div>
+        
+        <!-- Resolution list -->
+        <div class="col-8 text-center mx-0">
+            3. Yesss
+        </div>
+    </div>
+
+</div>
