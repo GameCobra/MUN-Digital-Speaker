@@ -1,5 +1,4 @@
-﻿@model List<string>
-@{
+﻿@{
     ViewData["Title"] = "Display";
     ViewData["HideNavbar"] = true;
     ViewData["NoContainer"] = true;
@@ -7,6 +6,22 @@
 
 <style>
     .speakerOrder {
+        width: fit-content; /* shrink to content width */
+        margin: 0 auto; /* center horizontally */
+        text-align: left; /* keep numbers aligned */
+        list-style-position: outside;
+        padding-left: 1.4em; /* controls number spacing */
+    }
+
+    .ammOrder {
+        width: fit-content; /* shrink to content width */
+        margin: 0 auto; /* center horizontally */
+        text-align: left; /* keep numbers aligned */
+        list-style-position: outside;
+        padding-left: 1.4em; /* controls number spacing */
+    }
+
+    .Res {
         width: fit-content; /* shrink to content width */
         margin: 0 auto; /* center horizontally */
         text-align: left; /* keep numbers aligned */
@@ -29,6 +44,32 @@
             item.innerHTML = data[i];
             orderElement[0].appendChild(item);
         }
+
+        const response2 = await fetch('/SpeakerOrder/AmendmentListAsJSON');
+        const data2 = await response2.json();
+
+        const orderElement2 = document.getElementsByClassName("ammOrder");
+        orderElement2[0].innerHTML = '';
+        for (let i = 0; i < data2.length; i++)
+        {
+            const item2 = document.createElement("li");
+            item2.innerHTML = data2[i];
+            orderElement2[0].appendChild(item2);
+        }
+
+        const response3 = await fetch('/SpeakerOrder/ResolutionsAsJSON');
+        const data3 = await response3.json();
+
+        const orderElement3 = document.getElementsByClassName("Res");
+        orderElement3[0].innerHTML = '';
+        for (let i = 0; i < data3.length; i++)
+        {
+            const item3 = document.createElement("li");
+            item3.innerHTML = data3[i].name + ": " + data3[i].state;
+            orderElement3[0].appendChild(item3);
+        }
+
+
     }
 
     // refresh every 5 seconds
@@ -40,19 +81,21 @@
     <div class="row">
 
         <!-- Amendment order -->
-        <div class="col-2 text-center mx-0">
-            1. Yes
+        <div class="col-3 mx-0">
+            <div class="fs-3 text-center"><b>Ammendments</b></div>
+            <ol class="ammOrder" style="color:white"></ol>
         </div>
         
         <!-- Debater Order -->
-        <div class="col-2 mx-0">
+        <div class="col-3 mx-0">
             <div class="fs-3 text-center"><b>Debators</b></div>
             <ol class="speakerOrder" style="color:white"></ol>
         </div>
         
         <!-- Resolution list -->
-        <div class="col-8 text-center mx-0">
-            3. Yesss
+        <div class="col-6 text-center mx-0">
+            <div class="fs-3 text-center"><b>Resolutions</b></div>
+            <ul class="Res" style="color:white"></ul>
         </div>
     </div>
 

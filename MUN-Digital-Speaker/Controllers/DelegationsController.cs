@@ -20,12 +20,16 @@ namespace MUN_Digital_Speaker.Controllers
 
         // Helper function to look up delegations
         DelegationLookup delLookup;
+        private readonly SpeakerListControlStates? _speakerControl;
+
 
         // Init Function
-        public DelegationsController(MUN_Digital_SpeakerContext context)
+        public DelegationsController(MUN_Digital_SpeakerContext context, SpeakerListControlStates? speakerControl)
         {
             delegationsDBContext = context;
             delLookup = new DelegationLookup(delegationsDBContext);
+            _speakerControl = speakerControl;
+
         }
 
         // Page allowing the admin account to view all delegations
@@ -319,6 +323,18 @@ namespace MUN_Digital_Speaker.Controllers
             }*/
 
             ViewData["Message"] = "File uploaded successfully!";
+        }
+
+        [Authorize]
+        public async Task<IActionResult> SetResolutionsToDefault()
+        {
+            if (!await delLookup.IsAdmin(User.Identity.Name))
+            {
+                return Unauthorized();
+            }
+
+            _speakerControl!.Resolutions = await delLookup.LoadResolutionsAsync();
+            return RedirectToAction("Index", "Delegations");
         }
     }
 }

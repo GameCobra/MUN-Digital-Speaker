@@ -53,6 +53,14 @@ namespace MUN_Digital_Speaker.Controllers
             return Json(speakingCountries);
         }
 
+        public IActionResult ResolutionsAsJSON()
+        {
+            if (_speakerControl.Resolutions != null)
+                return Json(_speakerControl.Resolutions.OrderBy(x => x.ID));
+            else
+                return Json(new List<string>());
+        }
+
 
 
         public IActionResult Index() 
@@ -63,16 +71,13 @@ namespace MUN_Digital_Speaker.Controllers
 
         public IActionResult ViewSpeakerOrder()
         {
-            List<string> emptySpeakingCountries = [""];
 
-            return View(emptySpeakingCountries);
+            return View();
         }
 
         public IActionResult ViewAmendmentOrder()
         {
-            List<string> emptySpeakingCountries = [""];
-
-            return View(emptySpeakingCountries);
+            return View();
         }
 
 

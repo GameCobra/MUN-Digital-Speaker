@@ -43,7 +43,7 @@ namespace MUN_Digital_Speaker.Controllers
             {
                 delegation.RequestedToSpeak = false;
             }
-            DelegationsController delegationController = new DelegationsController(delegationsDBContext);
+            DelegationsController delegationController = new DelegationsController(delegationsDBContext, null);
 
             try
             {
