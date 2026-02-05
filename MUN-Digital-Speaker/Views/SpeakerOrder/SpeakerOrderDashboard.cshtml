@@ -1,4 +1,5 @@
-﻿@{
+﻿@model List<Resolution>
+@{
     ViewData["Title"] = "Speaker Order Dashboard";
 }
 
@@ -51,5 +52,37 @@
                 <input type="submit" value="Unlock" class="btn btn-primary" />
             </div>
         </form>
+    </div>
+</div>
+
+
+<button type="button" class="btn btn-success col-md-3" data-bs-toggle="modal" data-bs-target=@("#" + "Popup1" )>Modify Resolution</button>
+
+<div class="modal fade" id=@("Popup1") tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">@("Change resolution state")</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="/SpeakerOrder/ChangeResolution" method="post">
+
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="ResID" class="col-form-label">Resolution ID:</label>
+                        <input type="text" class="form-control" name="ResID">
+                    </div>
+                    <div class="form-group">
+                        <label for="state" class="col-form-label">State:</label>
+                        <textarea class="form-control" name="state"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+            </form>
+
+        </div>
     </div>
 </div>

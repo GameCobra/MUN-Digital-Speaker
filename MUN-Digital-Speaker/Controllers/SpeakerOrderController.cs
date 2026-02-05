@@ -89,7 +89,7 @@ namespace MUN_Digital_Speaker.Controllers
                 return Unauthorized();
             }
 
-            return View();
+            return View(_speakerControl.Resolutions);
         }
 
         [HttpPost]
@@ -167,6 +167,16 @@ namespace MUN_Digital_Speaker.Controllers
 
             _speakerControl.allowSpeakRequests = true;
             return RedirectToAction("SpeakerOrderDashboard", "SpeakerOrder");
+        }
+
+        [HttpPost]
+        [Authorize]
+        public IActionResult ChangeResolution(string ResID, string state)
+        {
+            Resolution? res = _speakerControl.Resolutions.FirstOrDefault(x => x.ID.ToString() == ResID);
+            if (res != null)
+                res.State = state;
+            return RedirectToAction("SpeakerOrderDashboard", "SpeakerOrderDashboard");
         }
     }
 }
