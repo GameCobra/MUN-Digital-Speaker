@@ -82,13 +82,13 @@ namespace MUN_Digital_Speaker.Controllers
 
 
         [Authorize]
-        public async Task<IActionResult> SpeakerOrderDashboard()
+        public async Task<IActionResult> SpeakerOrderDashboard(int? curRes)
         {
             if (!await delLookup.IsAdmin(User.Identity.Name))
             {
                 return Unauthorized();
             }
-
+            ViewData["curRes"] = curRes;
             return View(_speakerControl.Resolutions);
         }
 
@@ -176,7 +176,13 @@ namespace MUN_Digital_Speaker.Controllers
             Resolution? res = _speakerControl.Resolutions.FirstOrDefault(x => x.ID.ToString() == ResID);
             if (res != null)
                 res.State = state;
-            return RedirectToAction("SpeakerOrderDashboard", "SpeakerOrderDashboard");
+            return RedirectToAction("SpeakerOrderDashboard", "SpeakerOrder");
+        }
+
+        public IActionResult SetCurrentResolution(int resID)
+        {
+            _speakerControl.CurrentResolution = resID;
+            return RedirectToAction("SpeakerOrderDashboard", "SpeakerOrder", new { curRes = resID });
         }
     }
 }

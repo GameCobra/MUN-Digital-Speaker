@@ -82,7 +82,36 @@
                     <button type="submit" class="btn btn-primary">Submit</button>
                 </div>
             </form>
+        </div>
+    </div>
+</div>
 
+<div>
+    @ViewData["curRes"]
+</div>
+
+<button type="button" class="btn btn-success col-md-3" data-bs-toggle="modal" data-bs-target=@("#" + "Popup2")>Set Current Res</button>
+
+<div class="modal fade" id=@("Popup2") tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">@("Change current res")</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="/SpeakerOrder/SetCurrentResolution" method="post">
+
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="ResID" class="col-form-label">Resolution ID:</label>
+                        <input type="text" class="form-control" name="ResID">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
