@@ -83,9 +83,12 @@ namespace MUN_Digital_Speaker.Controllers
                 }
             }
             //ViewData["displayList"] = speakingCountries;
-            speakingCountries.Insert(0, _speakerControl.firstSpeaker);
-            speakingCountries.Insert(1, _speakerControl.secondSpeaker);
-            speakingCountries.Insert(2, _speakerControl.thirdSpeaker);
+            if (_speakerControl.firstSpeaker != "")
+                speakingCountries.Insert(0, _speakerControl.firstSpeaker);
+            if (_speakerControl.secondSpeaker != "")
+                speakingCountries.Insert(1, _speakerControl.secondSpeaker);
+            if (_speakerControl.thirdSpeaker != "")
+                speakingCountries.Insert(2, _speakerControl.thirdSpeaker);
 
             return Json(speakingCountries);
         }
@@ -116,14 +119,6 @@ namespace MUN_Digital_Speaker.Controllers
                                             .OrderBy(x => x.ID));
             else
                 return Json(new List<string>());
-        }
-
-
-
-        public IActionResult Index() 
-        {
-            //Will be a home page for generating the screens
-            return View();
         }
 
         public IActionResult ViewSpeakerOrder()

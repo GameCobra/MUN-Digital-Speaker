@@ -93,7 +93,18 @@ namespace MUN_Digital_Speaker.Controllers
             {
                 currentDelegation.amendments = new List<Amendment>();
             }
-            currentDelegation.amendments.Add(new Amendment { Change = change, ResolutionID = resoltuionID, ClauseNumber = ClauseNumber});
+            if (currentDelegation.amendments.Any(x => x.ResolutionID == resoltuionID))
+            {
+                Amendment amendmentToChange = currentDelegation.amendments.First(x => x.ResolutionID == resoltuionID);
+                amendmentToChange.Change = change;
+                amendmentToChange.ResolutionID = resoltuionID;
+                amendmentToChange.ClauseNumber = ClauseNumber;
+            }
+            else
+            {
+                currentDelegation.amendments.Add(new Amendment { Change = change, ResolutionID = resoltuionID, ClauseNumber = ClauseNumber });
+            }
+
             delegationsDBContext.Update(currentDelegation);
             await delegationsDBContext.SaveChangesAsync();
             return RedirectToAction(actionName: nameof(ViewAmendments));
