@@ -24,14 +24,69 @@ namespace MUN_Digital_Speaker.Controllers
         }
         public IActionResult SpeakerListAsJSON()
         {
-            #pragma warning disable CS8619 // Nullability of reference types in value doesn't match target type.
-            List<string> speakingCountries = delegationsDBContext.Delegation.Where(x => x.RequestedToSpeak == true)
-                               .OrderBy(x => x.TimesSpoken)
-                               .ThenBy(x => x.Login)
-                               .Select(x => x.Country).ToList();
-            #pragma warning restore CS8619 // Nullability of reference types in value doesn't match target type.
 
+
+            if (!delegationsDBContext.Delegation.Any(x => x.Country == _speakerControl.firstSpeaker && x.RequestedToSpeak == true))
+            {
+                _speakerControl.firstSpeaker = "";
+            }
+            if (!delegationsDBContext.Delegation.Any(x => x.Country == _speakerControl.secondSpeaker && x.RequestedToSpeak == true))
+            {
+                _speakerControl.secondSpeaker = "";
+            }
+            if (!delegationsDBContext.Delegation.Any(x => x.Country == _speakerControl.thirdSpeaker && x.RequestedToSpeak == true))
+            {
+                _speakerControl.thirdSpeaker = "";
+            }
+
+            List<string> speakingCountries = new List<string>();
+            for (int i = 0; i < 7; i++)
+            {
+                #pragma warning disable CS8619 // Nullability of reference types in value doesn't match target type.
+                speakingCountries = delegationsDBContext.Delegation
+                                   .Where(x => x.RequestedToSpeak == true)
+                                   .Where(x => x.Country != _speakerControl.firstSpeaker && x.Country != _speakerControl.secondSpeaker && x.Country != _speakerControl.thirdSpeaker)
+                                   .OrderBy(x => x.TimesSpoken)
+                                   .ThenBy(x => x.Login)
+                                   .Select(x => x.Country)
+                                   .ToList();
+                #pragma warning restore CS8619 // Nullability of reference types in value doesn't match target type.
+
+                if (_speakerControl.firstSpeaker == "")
+                {
+                    _speakerControl.firstSpeaker = _speakerControl.secondSpeaker;
+                    _speakerControl.secondSpeaker = _speakerControl.thirdSpeaker;
+                    _speakerControl.thirdSpeaker = "";
+                    if (speakingCountries.Count() > 0)
+                    {
+                        _speakerControl.thirdSpeaker = speakingCountries[0];
+                        speakingCountries.Remove(speakingCountries[0]);
+                    }
+                }
+                if (_speakerControl.secondSpeaker == "")
+                {
+                    _speakerControl.secondSpeaker = _speakerControl.thirdSpeaker;
+                    _speakerControl.thirdSpeaker = "";
+                    if (speakingCountries.Count() > 0)
+                    {
+                        _speakerControl.thirdSpeaker = speakingCountries[0];
+                        speakingCountries.Remove(speakingCountries[0]);
+                    }
+                }
+                if (_speakerControl.thirdSpeaker == "")
+                {
+                    if (speakingCountries.Count() > 0)
+                    {
+                        _speakerControl.thirdSpeaker = speakingCountries[0];
+                        speakingCountries.Remove(speakingCountries[0]);
+                    }
+                }
+            }
             //ViewData["displayList"] = speakingCountries;
+            speakingCountries.Insert(0, _speakerControl.firstSpeaker);
+            speakingCountries.Insert(1, _speakerControl.secondSpeaker);
+            speakingCountries.Insert(2, _speakerControl.thirdSpeaker);
+
             return Json(speakingCountries);
         }
 
@@ -47,7 +102,7 @@ namespace MUN_Digital_Speaker.Controllers
                                //.Where(x => x.amendments != null && x.amendments.Count() > 0)
                                .Where(x => x.amendments.Any(y => y.ResolutionID == currentResoluton))
                                .Select(x => x.Country).ToList();
-        #pragma warning restore CS8619 // Nullability of reference types in value doesn't match target type.
+            #pragma warning restore CS8619 // Nullability of reference types in value doesn't match target type.
 
             //ViewData["displayList"] = speakingCountries;
             return Json(speakingCountries);
