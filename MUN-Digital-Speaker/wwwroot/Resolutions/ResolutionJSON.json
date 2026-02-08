@@ -1,20 +1,198 @@
 [
   {
     "ID": 0,
-    "Name": "AI",
+    "Name": "GA #001: Fossil Fuel Use and Clean Energy Industries",
     "Link": "https://www.google.ca",
-    "Text": "WE WANT AI"
+    "Text": "",
+    "Councel":  "GEN"
   },
   {
     "ID": 1,
-    "Name": "NOT AI",
+    "Name": "GA #002: Health Care Infrastructure",
     "Link": "https://www.google.ca",
-    "Text": "WE NOT WANT AI"
+    "Text": "",
+    "Councel": "GEN"
   },
   {
     "ID": 2,
-    "Name": "Maybe AI?",
+    "Name": "GA #003: Effects of Climate Change",
     "Link": "https://www.google.ca",
-    "Text": "AIIIII"
+    "Text": "",
+    "Councel": "GEN"
+  },
+  {
+    "ID": 3,
+    "Name": "GA #004: Immigration Laws",
+    "Link": "https://www.google.ca",
+    "Text": "",
+    "Councel": "GEN"
+  },
+  {
+    "ID": 4,
+    "Name": "GA #005: AI Regulation and Safety",
+    "Link": "https://www.google.ca",
+    "Text": "",
+    "Councel": "GEN"
+  },
+  {
+    "ID": 5,
+    "Name": "GA #006: Wealth Inequality and Poverty",
+    "Link": "https://www.google.ca",
+    "Text": "",
+    "Councel": "GEN"
+  },
+  {
+    "ID": 6,
+    "Name": "GA #007: Weapons-free Outer Space",
+    "Link": "https://www.google.ca",
+    "Text": "",
+    "Councel": "GEN"
+  },
+  {
+    "ID": 7,
+    "Name": "GA #008: Military Development and Spending",
+    "Link": "https://www.google.ca",
+    "Text": "",
+    "Councel": "GEN"
+  },
+  {
+    "ID": 8,
+    "Name": "ECOSOC #001: Universal Basic Income",
+    "Link": "https://www.google.ca",
+    "Text": "",
+    "Councel": "ECO"
+  },
+  {
+    "ID": 9,
+    "Name": "ECOSOC #002: Corporate Accountability for Mining and Pollution",
+    "Link": "https://www.google.ca",
+    "Text": "",
+    "Councel": "ECO"
+  },
+  {
+    "ID": 10,
+    "Name": "ECOSOC #003: Equality and Access to Safe Education",
+    "Link": "https://www.google.ca",
+    "Text": "",
+    "Councel": "ECO"
+  },
+  {
+    "ID": 11,
+    "Name": "ECOSOC #004: The Housing Crisis",
+    "Link": "https://www.google.ca",
+    "Text": "",
+    "Councel": "ECO"
+  },
+  {
+    "ID": 12,
+    "Name": "ECOSOC #005: Defending Democracy",
+    "Link": "https://www.google.ca",
+    "Text": "",
+    "Councel": "ECO"
+  },
+  {
+    "ID": 13,
+    "Name": "EC #001: Deforestation",
+    "Link": "https://www.google.ca",
+    "Text": "",
+    "Councel": "ENV"
+  },
+  {
+    "ID": 14,
+    "Name": "EC #002: Plastic Pollution",
+    "Link": "https://www.google.ca",
+    "Text": "",
+    "Councel": "ENV"
+  },
+  {
+    "ID": 15,
+    "Name": "EC #003: Water Pollution and Loss of Marine Animals",
+    "Link": "https://www.google.ca",
+    "Text": "",
+    "Councel": "ENV"
+  },
+  {
+    "ID": 16,
+    "Name": "EC #004: Sustainable Mining Practices",
+    "Link": "https://www.google.ca",
+    "Text": "",
+    "Councel": "ENV"
+  },
+  {
+    "ID": 17,
+    "Name": "EC #005: Animal Testing",
+    "Link": "https://www.google.ca",
+    "Text": "",
+    "Councel": "ENV"
+  },
+  {
+    "ID": 18,
+    "Name": "HC #001: Child and Infant Mortality",
+    "Link": "https://www.google.ca",
+    "Text": "",
+    "Councel": "HE"
+  },
+  {
+    "ID": 19,
+    "Name": "HC #002: Gender Affirming Care",
+    "Link": "https://www.google.ca",
+    "Text": "",
+    "Councel": "HE"
+  },
+  {
+    "ID": 20,
+    "Name": "HC #003: Mental Health and Suicide",
+    "Link": "https://www.google.ca",
+    "Text": "",
+    "Councel": "HE"
+  },
+  {
+    "ID": 21,
+    "Name": "HC #004: Abortion Laws",
+    "Link": "https://www.google.ca",
+    "Text": "",
+    "Councel": "HE"
+  },
+  {
+    "ID": 22,
+    "Name": "HC #005: Vaccination Policy",
+    "Link": "https://www.google.ca",
+    "Text": "",
+    "Councel": "HE"
+  },
+  {
+    "ID": 23,
+    "Name": "SC #001: Illegal Drugs Trade",
+    "Link": "https://www.google.ca",
+    "Text": "",
+    "Councel": "SEC"
+  },
+  {
+    "ID": 24,
+    "Name": "SC #002: Nuclear Disarmament",
+    "Link": "https://www.google.ca",
+    "Text": "",
+    "Councel": "SEC"
+  },
+  {
+    "ID": 25,
+    "Name": "SC #003: Countering Terrorism",
+    "Link": "https://www.google.ca",
+    "Text": "",
+    "Councel": "SEC"
+  },
+  {
+    "ID": 26,
+    "Name": "SC #004: Regulating Civil Protests and Police Brutality",
+    "Link": "https://www.google.ca",
+    "Text": "",
+    "Councel": "SEC"
+  },
+  {
+    "ID": 27,
+    "Name": "SC #005: Online/Data Security",
+    "Link": "https://www.google.ca",
+    "Text": "",
+    "Councel": "SEC"
   }
 ]

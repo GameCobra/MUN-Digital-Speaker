@@ -57,7 +57,7 @@
             orderElement2[0].appendChild(item2);
         }
 
-        const response3 = await fetch('/SpeakerOrder/ResolutionsAsJSON');
+        const response3 = await fetch('/SpeakerOrder/ResolutionsAsJSON?councel=GEN');
         const data3 = await response3.json();
 
         const orderElement3 = document.getElementsByClassName("Res");
@@ -78,25 +78,27 @@
 </script>
 
 <div class="fs-4" style="color:white">
+    <div class="container-fluid">
     <div class="row">
 
         <!-- Amendment order -->
         <div class="col-3 mx-0">
-            <div class="fs-3 text-center"><b>Ammendments</b></div>
+            <div class="fs-1 text-center"><b>Ammendments</b></div>
             <ol class="ammOrder" style="color:white"></ol>
         </div>
         
         <!-- Debater Order -->
         <div class="col-3 mx-0">
-            <div class="fs-3 text-center"><b>Debators</b></div>
+            <div class="fs-1 text-center"><b>Debators</b></div>
             <ol class="speakerOrder" style="color:white"></ol>
         </div>
         
         <!-- Resolution list -->
         <div class="col-6 text-center mx-0">
-            <div class="fs-3 text-center"><b>Resolutions</b></div>
+            <div class="fs-1 text-center"><b>Resolutions</b></div>
             <ul class="Res" style="color:white"></ul>
         </div>
+    </div>
     </div>
 
 </div>

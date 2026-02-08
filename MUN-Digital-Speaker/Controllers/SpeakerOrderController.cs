@@ -108,10 +108,12 @@ namespace MUN_Digital_Speaker.Controllers
             return Json(speakingCountries);
         }
 
-        public IActionResult ResolutionsAsJSON()
+        public IActionResult ResolutionsAsJSON(string? councel)
         {
             if (_speakerControl.Resolutions != null)
-                return Json(_speakerControl.Resolutions.OrderBy(x => x.ID));
+                return Json(_speakerControl.Resolutions
+                                            .Where(x => x.Councel == councel)
+                                            .OrderBy(x => x.ID));
             else
                 return Json(new List<string>());
         }
