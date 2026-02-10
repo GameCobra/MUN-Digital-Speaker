@@ -1,0 +1,54 @@
+﻿@model List<Delegation>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Delegation
+            </th>
+            <th>
+                Resolution
+            </th>
+            <th>
+                Clause Number
+            </th>
+            <th>
+                Text
+            </th>
+            <th>
+
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+
+        @foreach (var delegation in Model)
+        {
+            @foreach (var ammendment in delegation.amendments)
+            {
+                <tr>
+                    <td>
+                        @delegation.Country
+                    </td>
+                    <td>
+                        @ammendment.ResolutionID
+                    </td>
+                    <td>
+                        @ammendment.ClauseNumber
+                    </td>
+                    <td>
+                        @ammendment.Change
+                    </td>
+                    <td>
+                        <form action="/UserInterface/DeleteResolution" method="post">
+                            <input type="hidden" name="delegationID" value=@delegation.Id />
+                            <input type="hidden" name="change" value=@ammendment.Change />
+
+                            <button class="btn btn-danger">Delete</button>
+                        </form>
+                    </td>
+            </tr>
+            }
+
+        }
+    </tbody>
+</table>

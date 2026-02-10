@@ -169,5 +169,16 @@ namespace MUN_Digital_Speaker.Controllers
 
             return RedirectToAction(actionName: nameof(ViewAmendments));
         }
+
+        [Authorize]
+        public async Task<IActionResult> ViewAllAmmendments()
+        {
+            bool isAdmin = await delLookup.IsAdmin(User.Identity.Name);
+            if (!isAdmin)
+            {
+                return Unauthorized();
+            }
+            return View(delegationsDBContext.Delegation.ToList());
+        }
     }
 }
