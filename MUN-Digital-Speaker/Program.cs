@@ -24,6 +24,8 @@ builder.Services.AddScoped<DelegationLookup>();
 
 builder.Services.AddSingleton<SpeakerListControlStates>();
 
+//builder.WebHost.UseUrls("http://0.0.0.0:80"); <---- UNCOMMENT BEFORE PRODUCTION
+
 var app = builder.Build();
 
 

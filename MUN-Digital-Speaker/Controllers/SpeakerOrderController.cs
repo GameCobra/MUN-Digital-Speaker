@@ -24,72 +24,30 @@ namespace MUN_Digital_Speaker.Controllers
         }
         public IActionResult SpeakerListAsJSON()
         {
-
-
-            if (!delegationsDBContext.Delegation.Any(x => x.Country == _speakerControl.firstSpeaker && x.RequestedToSpeak == true))
-            {
-                _speakerControl.firstSpeaker = "";
-            }
-            if (!delegationsDBContext.Delegation.Any(x => x.Country == _speakerControl.secondSpeaker && x.RequestedToSpeak == true))
-            {
-                _speakerControl.secondSpeaker = "";
-            }
-            if (!delegationsDBContext.Delegation.Any(x => x.Country == _speakerControl.thirdSpeaker && x.RequestedToSpeak == true))
-            {
-                _speakerControl.thirdSpeaker = "";
-            }
-
             List<string> speakingCountries = new List<string>();
-            for (int i = 0; i < 7; i++)
+            for (int i = 0; i < 4; i++)
             {
                 #pragma warning disable CS8619 // Nullability of reference types in value doesn't match target type.
                 speakingCountries = delegationsDBContext.Delegation
                                    .Where(x => x.RequestedToSpeak == true)
-                                   .Where(x => x.Country != _speakerControl.firstSpeaker && x.Country != _speakerControl.secondSpeaker && x.Country != _speakerControl.thirdSpeaker)
+                                   .Where(x => !_speakerControl.topSpeakerListGen.Contains(x.Country!))
                                    .OrderBy(x => x.TimesSpoken)
                                    .ThenBy(x => x.Login)
                                    .Select(x => x.Country)
                                    .ToList();
                 #pragma warning restore CS8619 // Nullability of reference types in value doesn't match target type.
 
-                if (_speakerControl.firstSpeaker == "")
+                if (_speakerControl.topSpeakerListGen.Count() < 3)
                 {
-                    _speakerControl.firstSpeaker = _speakerControl.secondSpeaker;
-                    _speakerControl.secondSpeaker = _speakerControl.thirdSpeaker;
-                    _speakerControl.thirdSpeaker = "";
-                    if (speakingCountries.Count() > 0)
-                    {
-                        _speakerControl.thirdSpeaker = speakingCountries[0];
-                        speakingCountries.Remove(speakingCountries[0]);
-                    }
-                }
-                if (_speakerControl.secondSpeaker == "")
-                {
-                    _speakerControl.secondSpeaker = _speakerControl.thirdSpeaker;
-                    _speakerControl.thirdSpeaker = "";
-                    if (speakingCountries.Count() > 0)
-                    {
-                        _speakerControl.thirdSpeaker = speakingCountries[0];
-                        speakingCountries.Remove(speakingCountries[0]);
-                    }
-                }
-                if (_speakerControl.thirdSpeaker == "")
-                {
-                    if (speakingCountries.Count() > 0)
-                    {
-                        _speakerControl.thirdSpeaker = speakingCountries[0];
-                        speakingCountries.Remove(speakingCountries[0]);
-                    }
+                    if (_speakerControl.topSpeakerListGen.Count() != 0)
+                        _speakerControl.topSpeakerListGen.Add(speakingCountries[0]);
                 }
             }
-            //ViewData["displayList"] = speakingCountries;
-            if (_speakerControl.firstSpeaker != "")
-                speakingCountries.Insert(0, _speakerControl.firstSpeaker);
-            if (_speakerControl.secondSpeaker != "")
-                speakingCountries.Insert(1, _speakerControl.secondSpeaker);
-            if (_speakerControl.thirdSpeaker != "")
-                speakingCountries.Insert(2, _speakerControl.thirdSpeaker);
 
+            for (int i = 0; i < _speakerControl.topSpeakerListGen.Count(); i++)
+            {
+                speakingCountries.Insert(i, _speakerControl.topSpeakerListGen[i]);
+            }
             return Json(speakingCountries);
         }
 
