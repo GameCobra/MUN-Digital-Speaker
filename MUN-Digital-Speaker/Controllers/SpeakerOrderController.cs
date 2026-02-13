@@ -101,7 +101,12 @@ namespace MUN_Digital_Speaker.Controllers
             return Json(speakingCountries);
         }
 
-        public IActionResult AmendmentListAsJSON(string? councel)
+        public IActionResult AmendmentListAsJSON(string councel)
+        {
+            return Json(GetAmendmentList(councel).Select(x => x.Country).ToList()!);
+        }
+
+        public List<Delegation> GetAmendmentList(string councel)
         {
             int currentResolution = -1;
             if (councel == "GEN")
@@ -126,15 +131,14 @@ namespace MUN_Digital_Speaker.Controllers
             }
 
 
-            List<String> speakingCountries = delegationsDBContext.Delegation
+            List<Delegation> speakingCountries = delegationsDBContext.Delegation
                                .OrderBy(x => x.AmendmentPoints)
                                .ThenBy(x => x.Login)
                                .Where(x => x.amendments != null && x.amendments!.Count() > 0)
-                               .Where(x => x.amendments!.Any(y => y.ResolutionID == currentResolution))
-                               .Select(x => x.Country).ToList()!;
+                               .Where(x => x.amendments!.Any(y => y.ResolutionID == currentResolution)).ToList();
 
             //ViewData["displayList"] = speakingCountries;
-            return Json(speakingCountries);
+            return speakingCountries;
         }
 
         public IActionResult ResolutionsAsJSON(string? councel)
@@ -145,6 +149,18 @@ namespace MUN_Digital_Speaker.Controllers
                                             .OrderBy(x => x.ID));
             else
                 return Json(new List<string>());
+        }
+
+        public string GetTopAmendmentText(string councel)
+        {
+            List<Delegation> am = GetAmendmentList(councel);
+            if (am != null && am.Count() >= 1)
+            {
+                string topAmmendmentText = am![0].amendments.FirstOrDefault(x => x.ResolutionID == _speakerControl!.CurrentResolutionGEN!).Change;
+                string clasue = am![0].amendments.FirstOrDefault(x => x.ResolutionID == _speakerControl!.CurrentResolutionGEN!).ClauseNumber;
+                return "(" + clasue + ") " + topAmmendmentText;
+            }
+            return "";
         }
 
         public IActionResult ViewSpeakerOrder(string? councel)

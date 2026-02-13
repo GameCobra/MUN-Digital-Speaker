@@ -110,22 +110,27 @@
         </div>
     }
 
-
-    @if (((bool?)ViewData["HideNavbar"]).GetValueOrDefault() == false)
-    {
-        <footer class="border-top footer text-muted">
-            <div class="container">
-                &copy; 2025 - MUN_Digital_Speaker - <a asp-area="" asp-controller="Home" asp-action="Credits">Credits</a>
-            </div>
-        </footer>
-    }
     @if (@ViewData["Message"] != null)
     {
-        <div>@ViewData["Message"]</div>
+        <div class="container">
+            <div class="row">
+                <div class="col-1"></div>
+                <div class="col-2">@("     " + ViewData["Message"])</div>
+            </div>
+        </div>
     }
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
+
+    @if (((bool?)ViewData["HideNavbar"]).GetValueOrDefault() == false)
+    {
+        <footer class="border-top footer text-muted">
+            <div class="container">
+                &copy; 2025 - MMUNx - Made by Adrian H.
+            </div>
+        </footer>
+    }
 </body>
 </html>

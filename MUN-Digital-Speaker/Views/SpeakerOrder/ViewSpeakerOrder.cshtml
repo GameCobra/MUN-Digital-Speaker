@@ -70,6 +70,12 @@
             orderElement3[0].appendChild(item3);
         }
 
+        const topTextObj = await fetch('/SpeakerOrder/GetTopAmendmentText?councel=@councel');
+        const speakText = await topTextObj.text();
+
+        document.querySelector(".topText").innerHTML = speakText;
+
+
 
     }
 
@@ -100,6 +106,22 @@
             <ul class="Res" style="color:white"></ul>
         </div>
     </div>
+
+        <div class="row">
+            <div class=" col-12"><br /></div>
+        </div>
+        <div class="row">
+            <div class="col-2 text-center mx-0"></div>
+            <div class="col-8 text-center mx-0">
+                <div class="topText">
+
+                </div>
+            </div>
+            <div class="col-2 text-center mx-0"></div>
+
+
+        </div>
+
     </div>
 
 </div>
