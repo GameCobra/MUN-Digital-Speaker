@@ -2,6 +2,7 @@
     ViewData["Title"] = "Display";
     ViewData["HideNavbar"] = true;
     ViewData["NoContainer"] = true;
+    string? councel = (string?)ViewData["Councel"];
 }
 
 <style>
@@ -33,7 +34,7 @@
 <body style="background-color:black;"></body>
 <script>
     async function fetchData() {
-        const response = await fetch('/SpeakerOrder/SpeakerListAsJSON');
+        const response = await fetch('/SpeakerOrder/SpeakerListAsJSON?councel=@councel');
         const data = await response.json();
 
         const orderElement = document.getElementsByClassName("speakerOrder");
@@ -45,7 +46,7 @@
             orderElement[0].appendChild(item);
         }
 
-        const response2 = await fetch('/SpeakerOrder/AmendmentListAsJSON');
+        const response2 = await fetch('/SpeakerOrder/AmendmentListAsJSON?councel=@councel');
         const data2 = await response2.json();
 
         const orderElement2 = document.getElementsByClassName("ammOrder");
@@ -57,7 +58,7 @@
             orderElement2[0].appendChild(item2);
         }
 
-        const response3 = await fetch('/SpeakerOrder/ResolutionsAsJSON?councel=GEN');
+        const response3 = await fetch('/SpeakerOrder/ResolutionsAsJSON?councel=@councel');
         const data3 = await response3.json();
 
         const orderElement3 = document.getElementsByClassName("Res");

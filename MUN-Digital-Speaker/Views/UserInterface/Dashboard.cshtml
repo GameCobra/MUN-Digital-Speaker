@@ -6,37 +6,141 @@
 
 <h1>Welcome @ViewData["country"]</h1>
 @{
-    bool? hasRequestedToSpeak = (bool?)@ViewData["hasRequested"];
+    bool hasRequestedToSpeakGEN = (bool?)@ViewData["hasRequestedGEN"] ?? false;
+    bool hasRequestedToSpeakECO = (bool?)@ViewData["hasRequestedECO"] ?? false;
+    bool hasRequestedToSpeakENV = (bool?)@ViewData["hasRequestedENV"] ?? false;
+    bool hasRequestedToSpeakHE = (bool?)@ViewData["hasRequestedHE"] ?? false;
+    bool hasRequestedToSpeakSEC = (bool?)@ViewData["hasRequestedSEC"] ?? false;
+
+
     
 }
-@if (hasRequestedToSpeak == false)
-{
-    <div class="row">
-        <div class="col-md-4">
-            <form asp-action="SpeakRequest">
-                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                <input type="hidden" asp-for="Login" value="@ViewData["login"]"/>
 
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="SpeakRequest">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Login" value="@ViewData["login"]" />
+            <input type="hidden" asp-for="Councel" value="GEN" />
+
+            @if (hasRequestedToSpeakGEN == false)
+            {
                 <div class="form-group">
-                    <input type="submit" value="Request To Speak"  class="btn btn-primary" />
+                    <input type="submit" value="Request To Speak - GA" class="btn btn-primary" />
                 </div>
-            </form>
-        </div>
-    </div>
-}
-@if (hasRequestedToSpeak == true)
-{
-    <div class="row">
-        <div class="col-md-4">
-            <form asp-action="SpeakRequest">
-                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                <input type="hidden" asp-for="Login" value="@ViewData["login"]" />
+            }
+            else
+            {
                 <input type="hidden" asp-for="IsRevoking" value="true" />
 
                 <div class="form-group">
-                    <input type="submit" value="Revoke Request" class="btn btn-primary" />
+                    <input type="submit" value="Revoke Request - GA" class="btn btn-primary" />
                 </div>
-            </form>
-        </div>
+            }
+        </form>
     </div>
-}
+</div>
+
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="SpeakRequest">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Login" value="@ViewData["login"]" />
+            <input type="hidden" asp-for="Councel" value="ECO" />
+
+            @if (hasRequestedToSpeakECO == false)
+            {
+                <div class="form-group">
+                    <input type="submit" value="Request To Speak - ECOSOC" class="btn btn-primary" />
+                </div>
+            }
+            else
+            {
+                <input type="hidden" asp-for="IsRevoking" value="true" />
+
+                <div class="form-group">
+                    <input type="submit" value="Revoke Request - ECOSOC" class="btn btn-primary" />
+                </div>
+            }
+        </form>
+    </div>
+</div>
+
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="SpeakRequest">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Login" value="@ViewData["login"]" />
+            <input type="hidden" asp-for="Councel" value="ENV" />
+
+            @if (hasRequestedToSpeakENV == false)
+            {
+                <div class="form-group">
+                    <input type="submit" value="Request To Speak - EC" class="btn btn-primary" />
+                </div>
+            }
+            else
+            {
+                <input type="hidden" asp-for="IsRevoking" value="true" />
+
+                <div class="form-group">
+                    <input type="submit" value="Revoke Request - EC" class="btn btn-primary" />
+                </div>
+            }
+        </form>
+    </div>
+</div>
+
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="SpeakRequest">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Login" value="@ViewData["login"]" />
+            <input type="hidden" asp-for="Councel" value="HE" />
+
+            @if (hasRequestedToSpeakHE == false)
+            {
+                <div class="form-group">
+                    <input type="submit" value="Request To Speak - HC" class="btn btn-primary" />
+                </div>
+            }
+            else
+            {
+                <input type="hidden" asp-for="IsRevoking" value="true" />
+
+                <div class="form-group">
+                    <input type="submit" value="Revoke Request - HC" class="btn btn-primary" />
+                </div>
+            }
+        </form>
+    </div>
+</div>
+
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="SpeakRequest">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Login" value="@ViewData["login"]" />
+            <input type="hidden" asp-for="Councel" value="SEC" />
+
+            @if (hasRequestedToSpeakSEC == false)
+            {
+                <div class="form-group">
+                    <input type="submit" value="Request To Speak - SC" class="btn btn-primary" />
+                </div>
+            }
+            else
+            {
+                <input type="hidden" asp-for="IsRevoking" value="true" />
+
+                <div class="form-group">
+                    <input type="submit" value="Revoke Request - SC" class="btn btn-primary" />
+                </div>
+            }
+        </form>
+    </div>
+</div>

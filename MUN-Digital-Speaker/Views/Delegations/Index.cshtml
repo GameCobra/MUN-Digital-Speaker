@@ -32,9 +32,6 @@
             <th>
                 @Html.DisplayNameFor(model => model.AmendmentPoints)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.RequestedToSpeak)
-            </th>
             <th></th>
         </tr>
     </thead>
@@ -73,9 +70,6 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.AmendmentPoints)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.RequestedToSpeak)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |

@@ -38,11 +38,52 @@ namespace MUN_Digital_Speaker.Controllers
                 return RedirectToAction(actionName: nameof(Dashboard), new { message = "locked" });
             }
             Delegation delegation = await delegationsDBContext.Delegation.FirstAsync(x => x.Login == requested.Login);
-            delegation.RequestedToSpeak = true;
-            if (requested.IsRevoking)
+
+            if (requested.Councel == "GEN")
             {
-                delegation.RequestedToSpeak = false;
+                delegation.RequestedToSpeakGEN = true;
+                if (requested.IsRevoking)
+                {
+                    delegation.RequestedToSpeakGEN = false;
+                }
             }
+
+            if (requested.Councel == "ECO")
+            {
+                delegation.RequestedToSpeakECO = true;
+                if (requested.IsRevoking)
+                {
+                    delegation.RequestedToSpeakECO = false;
+                }
+            }
+
+            if (requested.Councel == "ENV")
+            {
+                delegation.RequestedToSpeakENV = true;
+                if (requested.IsRevoking)
+                {
+                    delegation.RequestedToSpeakENV = false;
+                }
+            }
+
+            if (requested.Councel == "HE")
+            {
+                delegation.RequestedToSpeakHE = true;
+                if (requested.IsRevoking)
+                {
+                    delegation.RequestedToSpeakHE = false;
+                }
+            }
+
+            if (requested.Councel == "SEC")
+            {
+                delegation.RequestedToSpeakSEC = true;
+                if (requested.IsRevoking)
+                {
+                    delegation.RequestedToSpeakSEC = false;
+                }
+            }
+
             DelegationsController delegationController = new DelegationsController(delegationsDBContext, null);
 
             try
@@ -74,7 +115,12 @@ namespace MUN_Digital_Speaker.Controllers
 
             ViewData["country"] = loggedInDelegation.Country;
             ViewData["login"] = loggedInDelegation.Login;
-            ViewData["hasRequested"] = loggedInDelegation.RequestedToSpeak;
+            ViewData["hasRequestedGEN"] = loggedInDelegation.RequestedToSpeakGEN;
+            ViewData["hasRequestedECO"] = loggedInDelegation.RequestedToSpeakECO;
+            ViewData["hasRequestedENV"] = loggedInDelegation.RequestedToSpeakENV;
+            ViewData["hasRequestedHE"] = loggedInDelegation.RequestedToSpeakHE;
+            ViewData["hasRequestedSEC"] = loggedInDelegation.RequestedToSpeakSEC;
+
             ViewData["message"] = message;
             return View();
         }

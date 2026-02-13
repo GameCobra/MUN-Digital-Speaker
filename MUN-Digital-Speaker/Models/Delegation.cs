@@ -13,7 +13,12 @@ namespace MUN_Digital_Speaker.Models
         [Display(Name = "Amendment Points")]
         public int? AmendmentPoints { get; set; }
         [Display(Name = "Has Requested To Speak")]
-        public bool? RequestedToSpeak { get; set; }
+        public bool RequestedToSpeakGEN { get; set; }
+        public bool RequestedToSpeakECO { get; set; }
+        public bool RequestedToSpeakENV { get; set; }
+        public bool RequestedToSpeakHE { get; set; }
+        public bool RequestedToSpeakSEC { get; set; }
+
 
         public List<Amendment>? amendments { get; set; } 
 
