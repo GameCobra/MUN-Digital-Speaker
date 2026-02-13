@@ -221,7 +221,7 @@ namespace MUN_Digital_Speaker.Controllers
         }
         [Authorize]
         [HttpPost]
-        public async Task<IActionResult> DeleteResolution(int delegationID, string change)
+        public async Task<IActionResult> DeleteResolution(int delegationID, string resID)
         {
 
             Delegation delegationToEdit = await delegationsDBContext.Delegation.FirstAsync(x => x.Id == delegationID);
@@ -230,7 +230,7 @@ namespace MUN_Digital_Speaker.Controllers
             //Then deleting them will deleat both
             //Probably a small enough bug to ignore for now :)
 
-            delegationToEdit.amendments.RemoveAll(x => x.Change == change);
+            delegationToEdit.amendments.RemoveAll(x => x.ResolutionID.ToString() == resID);
 
             delegationsDBContext.Update(delegationToEdit);
             await delegationsDBContext.SaveChangesAsync();

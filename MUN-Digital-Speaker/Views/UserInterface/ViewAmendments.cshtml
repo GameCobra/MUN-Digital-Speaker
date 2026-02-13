@@ -101,7 +101,7 @@
                                             <td>
                                                 <form action="/UserInterface/DeleteResolution" method="post">
                                                     <input type="hidden" name="delegationID" value=@Model.delegation.Id />
-                                                    <input type="hidden" name="change" value=@amendment.Change />
+                                                    <input type="hidden" name="resID" value=@amendment.ResolutionID />
 
                                                     <button class="btn btn-danger">Delete</button>
                                                 </form>
