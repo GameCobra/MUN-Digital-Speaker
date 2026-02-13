@@ -109,7 +109,7 @@ namespace MUN_Digital_Speaker.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost, ValidateAntiForgeryToken, Authorize]
-        public async Task<IActionResult> Create([Bind("Id,Login,Key,Country,TimesSpoken,RequestedToSpeak")] Delegation delegation)
+        public async Task<IActionResult> Create([Bind("Id,Login,Key,Country,TimesSpoken,AmendmentPoints,RequestedToSpeak")] Delegation delegation)
         {
             if (!await delLookup.IsAdmin(User.Identity.Name))
             {
@@ -163,7 +163,7 @@ namespace MUN_Digital_Speaker.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost, ValidateAntiForgeryToken, Authorize]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Login,Key,Country,TimesSpoken,RequestedToSpeak")] Delegation delegation)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Login,Key,Country,TimesSpoken,AmendmentPoints,RequestedToSpeak")] Delegation delegation)
         {
             if (!await delLookup.IsAdmin(User.Identity.Name))
             {
@@ -305,7 +305,7 @@ namespace MUN_Digital_Speaker.Controllers
             }
             for (int i = 0; i < records.Count; i++)
             {
-                Delegation parseDelegation = new Delegation { Country = records[i][0], Login = int.Parse(records[i][1]), Key = 0, RequestedToSpeak = false, TimesSpoken = 0 };
+                Delegation parseDelegation = new Delegation { Country = records[i][0], Login = int.Parse(records[i][1]), Key = int.Parse(records[i][2]), RequestedToSpeak = false, TimesSpoken = 0, AmendmentPoints = 0};
                 delegationsDBContext.Add(parseDelegation);
             }
 
