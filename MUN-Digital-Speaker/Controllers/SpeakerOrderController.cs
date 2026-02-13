@@ -1,9 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis.Elfie.Serialization;
 using Microsoft.EntityFrameworkCore;
 using MUN_Digital_Speaker.Data;
 using MUN_Digital_Speaker.Models;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authorization;
 
 namespace MUN_Digital_Speaker.Controllers
 {
@@ -102,17 +103,35 @@ namespace MUN_Digital_Speaker.Controllers
 
         public IActionResult AmendmentListAsJSON(string? councel)
         {
-            int currentResoluton = _speakerControl.CurrentResolution;
+            int currentResolution = -1;
+            if (councel == "GEN")
+            {
+                currentResolution = _speakerControl.CurrentResolutionGEN;
+            }
+            if (councel == "ECO")
+            {
+                currentResolution = _speakerControl.CurrentResolutionECO;
+            }
+            if (councel == "ENV")
+            {
+                currentResolution = _speakerControl.CurrentResolutionENV;
+            }
+            if (councel == "HE")
+            {
+                currentResolution = _speakerControl.CurrentResolutionHE;
+            }
+            if (councel == "SEC")
+            {
+                currentResolution = _speakerControl.CurrentResolutionSEC;
+            }
 
-            #pragma warning disable CS8619 // Nullability of reference types in value doesn't match target type.
 
             List<String> speakingCountries = delegationsDBContext.Delegation
                                .OrderBy(x => x.AmendmentPoints)
                                .ThenBy(x => x.Login)
-                               //.Where(x => x.amendments != null && x.amendments.Count() > 0)
-                               .Where(x => x.amendments.Any(y => y.ResolutionID == currentResoluton))
-                               .Select(x => x.Country).ToList();
-            #pragma warning restore CS8619 // Nullability of reference types in value doesn't match target type.
+                               .Where(x => x.amendments != null && x.amendments!.Count() > 0)
+                               .Where(x => x.amendments!.Any(y => y.ResolutionID == currentResolution))
+                               .Select(x => x.Country).ToList()!;
 
             //ViewData["displayList"] = speakingCountries;
             return Json(speakingCountries);
@@ -313,27 +332,67 @@ namespace MUN_Digital_Speaker.Controllers
 
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> Lock()
+        public async Task<IActionResult> Lock(string councel)
         {
             if (!await delLookup.IsAdmin(User.Identity.Name))
             {
                 return Unauthorized();
             }
 
-            _speakerControl.allowSpeakRequests = false;
+            if (councel == "GEN")
+            {
+                _speakerControl.allowSpeakRequestsGEN = false;
+            }
+            if (councel == "ECO")
+            {
+                _speakerControl.allowSpeakRequestsECO = false;
+            }
+            if (councel == "ENV")
+            {
+                _speakerControl.allowSpeakRequestsENV = false;
+            }
+            if (councel == "HE")
+            {
+                _speakerControl.allowSpeakRequestsHE = false;
+            }
+            if (councel == "SEC")
+            {
+                _speakerControl.allowSpeakRequestsSEC = false;
+            }
+
             return RedirectToAction("SpeakerOrderDashboard", "SpeakerOrder");
         }
 
         [HttpPost]
         [Authorize]
-        public async Task<IActionResult> Unlock()
+        public async Task<IActionResult> Unlock(string councel)
         {
             if (!await delLookup.IsAdmin(User.Identity.Name))
             {
                 return Unauthorized();
             }
 
-            _speakerControl.allowSpeakRequests = true;
+            if (councel == "GEN")
+            {
+                _speakerControl.allowSpeakRequestsGEN = true;
+            }
+            if (councel == "ECO")
+            {
+                _speakerControl.allowSpeakRequestsECO = true;
+            }
+            if (councel == "ENV")
+            {
+                _speakerControl.allowSpeakRequestsENV = true;
+            }
+            if (councel == "HE")
+            {
+                _speakerControl.allowSpeakRequestsHE = true;
+            }
+            if (councel == "SEC")
+            {
+                _speakerControl.allowSpeakRequestsSEC = true;
+            }
+
             return RedirectToAction("SpeakerOrderDashboard", "SpeakerOrder");
         }
 
@@ -347,9 +406,28 @@ namespace MUN_Digital_Speaker.Controllers
             return RedirectToAction("SpeakerOrderDashboard", "SpeakerOrder");
         }
 
-        public IActionResult SetCurrentResolution(int resID)
+        public IActionResult SetCurrentResolution(int resID, string councel)
         {
-            _speakerControl.CurrentResolution = resID;
+            if (councel == "GEN")
+            {
+                _speakerControl.CurrentResolutionGEN = resID;
+            }
+            if (councel == "ECO")
+            {
+                _speakerControl.CurrentResolutionECO = resID;
+            }
+            if (councel == "ENV")
+            {
+                _speakerControl.CurrentResolutionENV = resID;
+            }
+            if (councel == "HE")
+            {
+                _speakerControl.CurrentResolutionHE = resID;
+            }
+            if (councel == "SEC")
+            {
+                _speakerControl.CurrentResolutionSEC = resID;
+            }
             return RedirectToAction("SpeakerOrderDashboard", "SpeakerOrder", new { curRes = resID });
         }
     }

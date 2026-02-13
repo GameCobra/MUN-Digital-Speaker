@@ -53,6 +53,27 @@ ALTER TABLE [Delegation] ADD [AmendmentPoints] int NULL;
 INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
 VALUES (N'20260113025444_AddedAmendmentPoints', N'9.0.0');
 
+DECLARE @var0 sysname;
+SELECT @var0 = [d].[name]
+FROM [sys].[default_constraints] [d]
+INNER JOIN [sys].[columns] [c] ON [d].[parent_column_id] = [c].[column_id] AND [d].[parent_object_id] = [c].[object_id]
+WHERE ([d].[parent_object_id] = OBJECT_ID(N'[Delegation]') AND [c].[name] = N'RequestedToSpeak');
+IF @var0 IS NOT NULL EXEC(N'ALTER TABLE [Delegation] DROP CONSTRAINT [' + @var0 + '];');
+ALTER TABLE [Delegation] DROP COLUMN [RequestedToSpeak];
+
+ALTER TABLE [Delegation] ADD [RequestedToSpeakECO] bit NOT NULL DEFAULT CAST(0 AS bit);
+
+ALTER TABLE [Delegation] ADD [RequestedToSpeakENV] bit NOT NULL DEFAULT CAST(0 AS bit);
+
+ALTER TABLE [Delegation] ADD [RequestedToSpeakGEN] bit NOT NULL DEFAULT CAST(0 AS bit);
+
+ALTER TABLE [Delegation] ADD [RequestedToSpeakHE] bit NOT NULL DEFAULT CAST(0 AS bit);
+
+ALTER TABLE [Delegation] ADD [RequestedToSpeakSEC] bit NOT NULL DEFAULT CAST(0 AS bit);
+
+INSERT INTO [__EFMigrationsHistory] ([MigrationId], [ProductVersion])
+VALUES (N'20260213163305_councels', N'9.0.0');
+
 COMMIT;
 GO
 

@@ -163,7 +163,7 @@ namespace MUN_Digital_Speaker.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost, ValidateAntiForgeryToken, Authorize]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Login,Key,Country,TimesSpoken,AmendmentPoints")] Delegation delegation)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Login,Key,Country,TimesSpoken,AmendmentPoints,RequestedToSpeakGEN,RequestedToSpeakECO,RequestedToSpeakENV,RequestedToSpeakHE,RequestedToSpeakSEC")] Delegation delegation)
         {
             if (!await delLookup.IsAdmin(User.Identity.Name))
             {

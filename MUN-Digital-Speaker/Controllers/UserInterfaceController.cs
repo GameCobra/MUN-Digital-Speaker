@@ -33,14 +33,16 @@ namespace MUN_Digital_Speaker.Controllers
         [HttpPost]
         public async Task<IActionResult> SpeakRequest(SpeakRequest requested)
         {
-            if (_speakerControl.allowSpeakRequests == false)
-            {
-                return RedirectToAction(actionName: nameof(Dashboard), new { message = "locked" });
-            }
+
             Delegation delegation = await delegationsDBContext.Delegation.FirstAsync(x => x.Login == requested.Login);
 
             if (requested.Councel == "GEN")
             {
+                if (_speakerControl.allowSpeakRequestsGEN == false)
+                {
+                    return RedirectToAction(actionName: nameof(Dashboard), new { message = "locked" });
+                }
+
                 delegation.RequestedToSpeakGEN = true;
                 if (requested.IsRevoking)
                 {
@@ -50,6 +52,11 @@ namespace MUN_Digital_Speaker.Controllers
 
             if (requested.Councel == "ECO")
             {
+                if (_speakerControl.allowSpeakRequestsECO == false)
+                {
+                    return RedirectToAction(actionName: nameof(Dashboard), new { message = "locked" });
+                }
+
                 delegation.RequestedToSpeakECO = true;
                 if (requested.IsRevoking)
                 {
@@ -59,6 +66,11 @@ namespace MUN_Digital_Speaker.Controllers
 
             if (requested.Councel == "ENV")
             {
+                if (_speakerControl.allowSpeakRequestsENV == false)
+                {
+                    return RedirectToAction(actionName: nameof(Dashboard), new { message = "locked" });
+                }
+
                 delegation.RequestedToSpeakENV = true;
                 if (requested.IsRevoking)
                 {
@@ -68,6 +80,11 @@ namespace MUN_Digital_Speaker.Controllers
 
             if (requested.Councel == "HE")
             {
+                if (_speakerControl.allowSpeakRequestsHE == false)
+                {
+                    return RedirectToAction(actionName: nameof(Dashboard), new { message = "locked" });
+                }
+
                 delegation.RequestedToSpeakHE = true;
                 if (requested.IsRevoking)
                 {
@@ -77,6 +94,11 @@ namespace MUN_Digital_Speaker.Controllers
 
             if (requested.Councel == "SEC")
             {
+                if (_speakerControl.allowSpeakRequestsSEC == false)
+                {
+                    return RedirectToAction(actionName: nameof(Dashboard), new { message = "locked" });
+                }
+
                 delegation.RequestedToSpeakSEC = true;
                 if (requested.IsRevoking)
                 {

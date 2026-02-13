@@ -8,6 +8,8 @@
         <form asp-action="Speak">
             <div class="text-danger"></div>
             <input type="hidden" value="Speak" />
+            <input type="text" name="councel" />
+
 
             <div class="form-group">
                 <input type="submit" value="Speak" class="btn btn-primary" />
@@ -20,7 +22,8 @@
     <div class="col-md-4">
         <form asp-action="ClearSpeak">
             <div class="text-danger"></div>
-            <input type="hidden" value="Clear" />
+            <input type="text" name="councel" />
+
 
             <div class="form-group">
                 <input type="submit" value="Clear" class="btn btn-primary" />
@@ -33,7 +36,8 @@
     <div class="col-md-4">
         <form asp-action="Lock">
             <div class="text-danger"></div>
-            <input type="hidden" value="Lock" />
+            <input type="text" name="councel" />
+
 
             <div class="form-group">
                 <input type="submit" value="Lock" class="btn btn-primary" />
@@ -46,7 +50,8 @@
     <div class="col-md-4">
         <form asp-action="Unlock">
             <div class="text-danger"></div>
-            <input type="hidden" value="Unlock" />
+            <input type="text" name="councel" />
+
 
             <div class="form-group">
                 <input type="submit" value="Unlock" class="btn btn-primary" />
@@ -105,6 +110,10 @@
                     <div class="form-group">
                         <label for="ResID" class="col-form-label">Resolution ID:</label>
                         <input type="text" class="form-control" name="ResID">
+                    </div>
+                    <div class="form-group">
+                        <label for="councel" class="col-form-label">Councel:</label>
+                        <input type="text" class="form-control" name="councel">
                     </div>
                 </div>
                 <div class="modal-footer">
