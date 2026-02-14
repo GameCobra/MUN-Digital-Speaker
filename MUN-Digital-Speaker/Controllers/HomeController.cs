@@ -33,5 +33,10 @@ namespace MUN_Digital_Speaker.Controllers
         {
             return View();
         }
+
+        public IActionResult Help()
+        {
+            return View();
+        }
     }
 }
