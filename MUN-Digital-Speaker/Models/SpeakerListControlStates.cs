@@ -18,7 +18,12 @@
 
         public List<Resolution>? Resolutions { get; set; }
 
-        public List<string> topSpeakerListGen { get; set; } = new List<string>();
+        public List<string> topSpeakerListGEN { get; set; } = new List<string>();
+        public List<string> topSpeakerListECO { get; set; } = new List<string>();
+        public List<string> topSpeakerListENV { get; set; } = new List<string>();
+        public List<string> topSpeakerListHE { get; set; } = new List<string>();
+        public List<string> topSpeakerListSEC { get; set; } = new List<string>();
+
 
         //Constants
 

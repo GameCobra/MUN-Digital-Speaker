@@ -26,78 +26,182 @@ namespace MUN_Digital_Speaker.Controllers
         public IActionResult SpeakerListAsJSON(string? councel)
         {
             List<string> speakingCountries = new List<string>();
-            for (int i = 0; i < 4; i++)
+            if (councel == "GEN")
             {
-                if (councel == "GEN")
+                int j = _speakerControl.topSpeakerListGEN.Count() - 1;
+                while (j >= 0)
                 {
-                    speakingCountries = delegationsDBContext.Delegation
-                                       .Where(x => x.RequestedToSpeakGEN == true)
-                                       .Where(x => !_speakerControl.topSpeakerListGen.Contains(x.Country!))
-                                       .OrderBy(x => x.TimesSpoken)
-                                       .ThenBy(x => x.Login)
-                                       .Select(x => x.Country)
-                                       .ToList()!;
+                    if (delegationsDBContext.Delegation.First(x => x.Country == _speakerControl.topSpeakerListGEN[j]).RequestedToSpeakGEN == false)
+                    {
+                        _speakerControl.topSpeakerListGEN.RemoveAt(j);
+                    }
+                    j--;
                 }
 
-                if (councel == "ECO")
+                for (int i = 0; i < 4; i++)
                 {
+
                     speakingCountries = delegationsDBContext.Delegation
-                                       .Where(x => x.RequestedToSpeakECO == true)
-                                       .Where(x => !_speakerControl.topSpeakerListGen.Contains(x.Country!))
-                                       .OrderBy(x => x.TimesSpoken)
-                                       .ThenBy(x => x.Login)
-                                       .Select(x => x.Country)
-                                       .ToList()!;
+                                    .Where(x => x.RequestedToSpeakGEN == true)
+                                    .Where(x => !_speakerControl.topSpeakerListGEN.Contains(x.Country!))
+                                    .OrderBy(x => x.TimesSpoken)
+                                    .ThenBy(x => x.Login)
+                                    .Select(x => x.Country)
+                                    .ToList()!;
+
+                    if (_speakerControl.topSpeakerListGEN.Count() < 3)
+                    {
+                        if (speakingCountries.Count() != 0)
+                            _speakerControl.topSpeakerListGEN.Add(speakingCountries[0]);
+                    }
                 }
 
-                if (councel == "ENV")
+                for (int i = 0; i < _speakerControl.topSpeakerListGEN.Count(); i++)
                 {
-                    speakingCountries = delegationsDBContext.Delegation
-                                       .Where(x => x.RequestedToSpeakENV == true)
-                                       .Where(x => !_speakerControl.topSpeakerListGen.Contains(x.Country!))
-                                       .OrderBy(x => x.TimesSpoken)
-                                       .ThenBy(x => x.Login)
-                                       .Select(x => x.Country)
-                                       .ToList()!;
+                    speakingCountries.Insert(i, _speakerControl.topSpeakerListGEN[i]);
+                }
+            }
+
+            if (councel == "ECO")
+            {
+                int j = _speakerControl.topSpeakerListECO.Count() - 1;
+                while (j >= 0)
+                {
+                    if (delegationsDBContext.Delegation.First(x => x.Country == _speakerControl.topSpeakerListECO[j]).RequestedToSpeakECO == false)
+                    {
+                        _speakerControl.topSpeakerListECO.RemoveAt(j);
+                    }
+                    j--;
                 }
 
-                if (councel == "HE")
+                for (int i = 0; i < 4; i++)
                 {
                     speakingCountries = delegationsDBContext.Delegation
-                                       .Where(x => x.RequestedToSpeakHE == true)
-                                       .Where(x => !_speakerControl.topSpeakerListGen.Contains(x.Country!))
-                                       .OrderBy(x => x.TimesSpoken)
-                                       .ThenBy(x => x.Login)
-                                       .Select(x => x.Country)
-                                       .ToList()!;
+                                    .Where(x => x.RequestedToSpeakECO == true)
+                                    .Where(x => !_speakerControl.topSpeakerListECO.Contains(x.Country!))
+                                    .OrderBy(x => x.TimesSpoken)
+                                    .ThenBy(x => x.Login)
+                                    .Select(x => x.Country)
+                                    .ToList()!;
+
+                    if (_speakerControl.topSpeakerListECO.Count() < 3)
+                    {
+                        if (speakingCountries.Count() != 0)
+                            _speakerControl.topSpeakerListECO.Add(speakingCountries[0]);
+                    }
                 }
+
+                for (int i = 0; i < _speakerControl.topSpeakerListECO.Count(); i++)
+                {
+                    speakingCountries.Insert(i, _speakerControl.topSpeakerListECO[i]);
+                }
+            }
+
+            if (councel == "ENV")
+            {
+                int j = _speakerControl.topSpeakerListENV.Count() - 1;
+                while (j >= 0)
+                {
+                    if (delegationsDBContext.Delegation.First(x => x.Country == _speakerControl.topSpeakerListENV[j]).RequestedToSpeakENV == false)
+                    {
+                        _speakerControl.topSpeakerListENV.RemoveAt(j);
+                    }
+                    j--;
+                }
+
+                for (int i = 0; i < 4; i++)
+                {
+                    speakingCountries = delegationsDBContext.Delegation
+                                    .Where(x => x.RequestedToSpeakENV == true)
+                                    .Where(x => !_speakerControl.topSpeakerListENV.Contains(x.Country!))
+                                    .OrderBy(x => x.TimesSpoken)
+                                    .ThenBy(x => x.Login)
+                                    .Select(x => x.Country)
+                                    .ToList()!;
+
+                    if (_speakerControl.topSpeakerListENV.Count() < 3)
+                    {
+                        if (speakingCountries.Count() != 0)
+                            _speakerControl.topSpeakerListENV.Add(speakingCountries[0]);
+                    }
+                }
+
+                for (int i = 0; i < _speakerControl.topSpeakerListENV.Count(); i++)
+                {
+                    speakingCountries.Insert(i, _speakerControl.topSpeakerListENV[i]);
+                }
+            }
+
+            if (councel == "HE")
+            {
+                int j = _speakerControl.topSpeakerListHE.Count() - 1;
+                while (j >= 0)
+                {
+                    if (delegationsDBContext.Delegation.First(x => x.Country == _speakerControl.topSpeakerListHE[j]).RequestedToSpeakHE == false)
+                    {
+                        _speakerControl.topSpeakerListHE.RemoveAt(j);
+                    }
+                    j--;
+                }
+
+                for (int i = 0; i < 4; i++)
+                {
+                    speakingCountries = delegationsDBContext.Delegation
+                                    .Where(x => x.RequestedToSpeakHE == true)
+                                    .Where(x => !_speakerControl.topSpeakerListHE.Contains(x.Country!))
+                                    .OrderBy(x => x.TimesSpoken)
+                                    .ThenBy(x => x.Login)
+                                    .Select(x => x.Country)
+                                    .ToList()!;
+
+                    if (_speakerControl.topSpeakerListHE.Count() < 3)
+                    {
+                        if (speakingCountries.Count() != 0)
+                            _speakerControl.topSpeakerListHE.Add(speakingCountries[0]);
+                    }
+                }
+
+                for (int i = 0; i < _speakerControl.topSpeakerListHE.Count(); i++)
+                {
+                    speakingCountries.Insert(i, _speakerControl.topSpeakerListHE[i]);
+                }
+            }
                 
-                if (councel == "SEC")
+            if (councel == "SEC")
+            {
+                int j = _speakerControl.topSpeakerListSEC.Count() - 1;
+                while (j >= 0)
+                {
+                    if (delegationsDBContext.Delegation.First(x => x.Country == _speakerControl.topSpeakerListSEC[j]).RequestedToSpeakSEC == false)
+                    {
+                        _speakerControl.topSpeakerListSEC.RemoveAt(j);
+                    }
+                    j--;
+                }
+
+                for (int i = 0; i < 4; i++)
                 {
                     speakingCountries = delegationsDBContext.Delegation
-                                       .Where(x => x.RequestedToSpeakSEC == true)
-                                       .Where(x => !_speakerControl.topSpeakerListGen.Contains(x.Country!))
-                                       .OrderBy(x => x.TimesSpoken)
-                                       .ThenBy(x => x.Login)
-                                       .Select(x => x.Country)
-                                       .ToList()!;
+                                    .Where(x => x.RequestedToSpeakSEC == true)
+                                    .Where(x => !_speakerControl.topSpeakerListSEC.Contains(x.Country!))
+                                    .OrderBy(x => x.TimesSpoken)
+                                    .ThenBy(x => x.Login)
+                                    .Select(x => x.Country)
+                                    .ToList()!;
+
+                    if (_speakerControl.topSpeakerListSEC.Count() < 3)
+                    {
+                        if (speakingCountries.Count() != 0)
+                            _speakerControl.topSpeakerListSEC.Add(speakingCountries[0]);
+                    }
                 }
 
-
-                /*
-                if (_speakerControl.topSpeakerListGen.Count() < 3)
+                for (int i = 0; i < _speakerControl.topSpeakerListSEC.Count(); i++)
                 {
-                    if (_speakerControl.topSpeakerListGen.Count() != 0)
-                        _speakerControl.topSpeakerListGen.Add(speakingCountries[0]);
+                    speakingCountries.Insert(i, _speakerControl.topSpeakerListSEC[i]);
                 }
-                */
             }
-            /*
-            for (int i = 0; i < _speakerControl.topSpeakerListGen.Count(); i++)
-            {
-                speakingCountries.Insert(i, _speakerControl.topSpeakerListGen[i]);
-            }
-            */
+
             return Json(speakingCountries);
         }
 
@@ -191,10 +295,19 @@ namespace MUN_Digital_Speaker.Controllers
 
             if (councel == "GEN")
             {
-                Delegation? topContry = delegationsDBContext.Delegation.Where(x => x.RequestedToSpeakGEN == true)
-                                   .OrderBy(x => x.TimesSpoken)
-                                   .ThenBy(x => x.Login)
-                                   .FirstOrDefault();
+                Delegation? topContry;
+                if (_speakerControl.topSpeakerListGEN.Count() > 0)
+                {
+                    topContry = delegationsDBContext.Delegation.First(x => x.Country == _speakerControl.topSpeakerListGEN[0]);
+                    _speakerControl.topSpeakerListGEN.RemoveAt(0);
+                }
+                else
+                {
+                    topContry = delegationsDBContext.Delegation.Where(x => x.RequestedToSpeakGEN == true)
+                                       .OrderBy(x => x.TimesSpoken)
+                                       .ThenBy(x => x.Login)
+                                       .FirstOrDefault();
+                }
 
                 if (topContry != null)
                 {
@@ -207,10 +320,19 @@ namespace MUN_Digital_Speaker.Controllers
 
             if (councel == "ECO")
             {
-                Delegation? topContry = delegationsDBContext.Delegation.Where(x => x.RequestedToSpeakECO == true)
-                                   .OrderBy(x => x.TimesSpoken)
-                                   .ThenBy(x => x.Login)
-                                   .FirstOrDefault();
+                Delegation? topContry;
+                if (_speakerControl.topSpeakerListECO.Count() > 0)
+                {
+                    topContry = delegationsDBContext.Delegation.First(x => x.Country == _speakerControl.topSpeakerListECO[0]);
+                    _speakerControl.topSpeakerListECO.RemoveAt(0);
+                }
+                else
+                {
+                    topContry = delegationsDBContext.Delegation.Where(x => x.RequestedToSpeakECO == true)
+                                       .OrderBy(x => x.TimesSpoken)
+                                       .ThenBy(x => x.Login)
+                                       .FirstOrDefault();
+                }
 
                 if (topContry != null)
                 {
@@ -223,26 +345,44 @@ namespace MUN_Digital_Speaker.Controllers
 
             if (councel == "ENV")
             {
-                Delegation? topContry = delegationsDBContext.Delegation.Where(x => x.RequestedToSpeakENV == true)
-                                   .OrderBy(x => x.TimesSpoken)
-                                   .ThenBy(x => x.Login)
-                                   .FirstOrDefault();
+                Delegation? topContry;
+                if (_speakerControl.topSpeakerListENV.Count() > 0)
+                {
+                    topContry = delegationsDBContext.Delegation.First(x => x.Country == _speakerControl.topSpeakerListENV[0]);
+                    _speakerControl.topSpeakerListENV.RemoveAt(0);
+                }
+                else
+                {
+                    topContry = delegationsDBContext.Delegation.Where(x => x.RequestedToSpeakENV == true)
+                                       .OrderBy(x => x.TimesSpoken)
+                                       .ThenBy(x => x.Login)
+                                       .FirstOrDefault();
+                }
 
                 if (topContry != null)
                 {
-                    topContry.TimesSpoken += 1;
-                    topContry.RequestedToSpeakENV = false;
+                topContry.TimesSpoken += 1;
+                topContry.RequestedToSpeakENV = false;
 
-                    await delegationsDBContext.SaveChangesAsync();
+                await delegationsDBContext.SaveChangesAsync();
                 }
             }
 
             if (councel == "HE")
             {
-                Delegation? topContry = delegationsDBContext.Delegation.Where(x => x.RequestedToSpeakHE == true)
-                                   .OrderBy(x => x.TimesSpoken)
-                                   .ThenBy(x => x.Login)
-                                   .FirstOrDefault();
+                Delegation? topContry;
+                if (_speakerControl.topSpeakerListHE.Count() > 0)
+                {
+                    topContry = delegationsDBContext.Delegation.First(x => x.Country == _speakerControl.topSpeakerListHE[0]);
+                    _speakerControl.topSpeakerListHE.RemoveAt(0);
+                }
+                else
+                {
+                    topContry = delegationsDBContext.Delegation.Where(x => x.RequestedToSpeakHE == true)
+                                        .OrderBy(x => x.TimesSpoken)
+                                        .ThenBy(x => x.Login)
+                                        .FirstOrDefault();
+                }
 
                 if (topContry != null)
                 {
@@ -255,10 +395,19 @@ namespace MUN_Digital_Speaker.Controllers
 
             if (councel == "SEC")
             {
-                Delegation? topContry = delegationsDBContext.Delegation.Where(x => x.RequestedToSpeakSEC == true)
-                                   .OrderBy(x => x.TimesSpoken)
-                                   .ThenBy(x => x.Login)
-                                   .FirstOrDefault();
+                Delegation? topContry;
+                if (_speakerControl.topSpeakerListSEC.Count() > 0)
+                {
+                    topContry = delegationsDBContext.Delegation.First(x => x.Country == _speakerControl.topSpeakerListSEC[0]);
+                    _speakerControl.topSpeakerListSEC.RemoveAt(0);
+                }
+                else
+                {
+                    topContry = delegationsDBContext.Delegation.Where(x => x.RequestedToSpeakSEC == true)
+                                       .OrderBy(x => x.TimesSpoken)
+                                       .ThenBy(x => x.Login)
+                                       .FirstOrDefault();
+                }
 
                 if (topContry != null)
                 {
@@ -294,6 +443,8 @@ namespace MUN_Digital_Speaker.Controllers
                 {
                     delegation.RequestedToSpeakGEN = false;
                 }
+
+                _speakerControl.topSpeakerListGEN = new List<string>();
             }
 
             if (councel == "ECO")
@@ -305,6 +456,9 @@ namespace MUN_Digital_Speaker.Controllers
                 {
                     delegation.RequestedToSpeakECO = false;
                 }
+
+                _speakerControl.topSpeakerListECO = new List<string>();
+
             }
 
             if (councel == "ENV")
@@ -316,6 +470,9 @@ namespace MUN_Digital_Speaker.Controllers
                 {
                     delegation.RequestedToSpeakENV = false;
                 }
+
+                _speakerControl.topSpeakerListENV = new List<string>();
+
             }
 
             if (councel == "HE")
@@ -327,6 +484,9 @@ namespace MUN_Digital_Speaker.Controllers
                 {
                     delegation.RequestedToSpeakHE = false;
                 }
+
+                _speakerControl.topSpeakerListHE = new List<string>();
+
             }
 
             if (councel == "SEC")
@@ -338,6 +498,9 @@ namespace MUN_Digital_Speaker.Controllers
                 {
                     delegation.RequestedToSpeakSEC = false;
                 }
+
+                _speakerControl.topSpeakerListSEC = new List<string>();
+
             }
 
 
