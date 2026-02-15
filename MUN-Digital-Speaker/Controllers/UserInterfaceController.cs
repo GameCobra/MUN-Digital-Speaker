@@ -151,6 +151,27 @@ namespace MUN_Digital_Speaker.Controllers
         [HttpPost]
         public async Task<IActionResult> SubmitAmmendment(string? change, int resoltuionID, string? ClauseNumber)
         {
+            if (resoltuionID == _speakerControl.CurrentResolutionGEN)
+            {
+                return RedirectToAction(actionName: nameof(ViewAmendments));
+            }
+            if (resoltuionID == _speakerControl.CurrentResolutionECO)
+            {
+                return RedirectToAction(actionName: nameof(ViewAmendments));
+            }
+            if (resoltuionID == _speakerControl.CurrentResolutionENV)
+            {
+                return RedirectToAction(actionName: nameof(ViewAmendments));
+            }
+            if (resoltuionID == _speakerControl.CurrentResolutionHE)
+            {
+                return RedirectToAction(actionName: nameof(ViewAmendments));
+            }
+            if (resoltuionID == _speakerControl.CurrentResolutionSEC)
+            {
+                return RedirectToAction(actionName: nameof(ViewAmendments));
+            }
+
             if (change == null || ClauseNumber == null)
             {
                 return RedirectToAction(actionName: nameof(ViewAmendments));
