@@ -213,33 +213,148 @@ namespace MUN_Digital_Speaker.Controllers
         public List<Delegation> GetAmendmentList(string councel)
         {
             int currentResolution = -1;
+            List<Delegation> speakingCountries = new List<Delegation>();
+
             if (councel == "GEN")
             {
+                speakingCountries = delegationsDBContext.Delegation
+                   .OrderBy(x => x.AmendmentPoints)
+                   .ThenBy(x => x.Login)
+                   .Where(x => x.amendments != null && x.amendments!.Count() > 0)
+                   .Where(x => x.amendments!.Any(y => y.ResolutionID == currentResolution))
+                   .Where(x => x.Country != _speakerControl.TopAmendmentGEN).ToList();
+
                 currentResolution = _speakerControl.CurrentResolutionGEN;
+                if (_speakerControl.TopAmendmentGEN == "" && speakingCountries.Count() > 0)
+                {
+                    _speakerControl.TopAmendmentGEN = speakingCountries[0].Country!;
+                }
+
+                speakingCountries = delegationsDBContext.Delegation
+                   .OrderBy(x => x.AmendmentPoints)
+                   .ThenBy(x => x.Login)
+                   .Where(x => x.amendments != null && x.amendments!.Count() > 0)
+                   .Where(x => x.amendments!.Any(y => y.ResolutionID == currentResolution))
+                   .Where(x => x.Country != _speakerControl.TopAmendmentGEN).ToList();
+
+                if (_speakerControl.TopAmendmentGEN != "")
+                {
+                    speakingCountries.Insert(0, delegationsDBContext.Delegation.First(x => x.Country == _speakerControl.TopAmendmentGEN));
+                }
             }
+
+
             if (councel == "ECO")
             {
+                speakingCountries = delegationsDBContext.Delegation
+                   .OrderBy(x => x.AmendmentPoints)
+                   .ThenBy(x => x.Login)
+                   .Where(x => x.amendments != null && x.amendments!.Count() > 0)
+                   .Where(x => x.amendments!.Any(y => y.ResolutionID == currentResolution))
+                   .Where(x => x.Country != _speakerControl.TopAmendmentECO).ToList();
+
                 currentResolution = _speakerControl.CurrentResolutionECO;
+                if (_speakerControl.TopAmendmentECO == "" && speakingCountries.Count() > 0)
+                {
+                    _speakerControl.TopAmendmentECO = speakingCountries[0].Country!;
+                }
+
+                speakingCountries = delegationsDBContext.Delegation
+                   .OrderBy(x => x.AmendmentPoints)
+                   .ThenBy(x => x.Login)
+                   .Where(x => x.amendments != null && x.amendments!.Count() > 0)
+                   .Where(x => x.amendments!.Any(y => y.ResolutionID == currentResolution))
+                   .Where(x => x.Country != _speakerControl.TopAmendmentECO).ToList();
+
+                if (_speakerControl.TopAmendmentECO != "")
+                {
+                    speakingCountries.Insert(0, delegationsDBContext.Delegation.First(x => x.Country == _speakerControl.TopAmendmentECO));
+                }
             }
+
             if (councel == "ENV")
             {
+                speakingCountries = delegationsDBContext.Delegation
+                   .OrderBy(x => x.AmendmentPoints)
+                   .ThenBy(x => x.Login)
+                   .Where(x => x.amendments != null && x.amendments!.Count() > 0)
+                   .Where(x => x.amendments!.Any(y => y.ResolutionID == currentResolution))
+                   .Where(x => x.Country != _speakerControl.TopAmendmentENV).ToList();
+
                 currentResolution = _speakerControl.CurrentResolutionENV;
+                if (_speakerControl.TopAmendmentENV == "" && speakingCountries.Count() > 0)
+                {
+                    _speakerControl.TopAmendmentENV = speakingCountries[0].Country!;
+                }
+
+                speakingCountries = delegationsDBContext.Delegation
+                   .OrderBy(x => x.AmendmentPoints)
+                   .ThenBy(x => x.Login)
+                   .Where(x => x.amendments != null && x.amendments!.Count() > 0)
+                   .Where(x => x.amendments!.Any(y => y.ResolutionID == currentResolution))
+                   .Where(x => x.Country != _speakerControl.TopAmendmentENV).ToList();
+
+                if (_speakerControl.TopAmendmentENV != "")
+                {
+                    speakingCountries.Insert(0, delegationsDBContext.Delegation.First(x => x.Country == _speakerControl.TopAmendmentENV));
+                }
             }
+
             if (councel == "HE")
             {
+                speakingCountries = delegationsDBContext.Delegation
+                   .OrderBy(x => x.AmendmentPoints)
+                   .ThenBy(x => x.Login)
+                   .Where(x => x.amendments != null && x.amendments!.Count() > 0)
+                   .Where(x => x.amendments!.Any(y => y.ResolutionID == currentResolution))
+                   .Where(x => x.Country != _speakerControl.TopAmendmentHE).ToList();
+
                 currentResolution = _speakerControl.CurrentResolutionHE;
+                if (_speakerControl.TopAmendmentHE == "" && speakingCountries.Count() > 0)
+                {
+                    _speakerControl.TopAmendmentHE = speakingCountries[0].Country!;
+                }
+
+                speakingCountries = delegationsDBContext.Delegation
+                   .OrderBy(x => x.AmendmentPoints)
+                   .ThenBy(x => x.Login)
+                   .Where(x => x.amendments != null && x.amendments!.Count() > 0)
+                   .Where(x => x.amendments!.Any(y => y.ResolutionID == currentResolution))
+                   .Where(x => x.Country != _speakerControl.TopAmendmentHE).ToList();
+
+                if (_speakerControl.TopAmendmentHE != "")
+                {
+                    speakingCountries.Insert(0, delegationsDBContext.Delegation.First(x => x.Country == _speakerControl.TopAmendmentHE));
+                }
             }
+
             if (councel == "SEC")
             {
+                speakingCountries = delegationsDBContext.Delegation
+                   .OrderBy(x => x.AmendmentPoints)
+                   .ThenBy(x => x.Login)
+                   .Where(x => x.amendments != null && x.amendments!.Count() > 0)
+                   .Where(x => x.amendments!.Any(y => y.ResolutionID == currentResolution))
+                   .Where(x => x.Country != _speakerControl.TopAmendmentSEC).ToList();
+
                 currentResolution = _speakerControl.CurrentResolutionSEC;
+                if (_speakerControl.TopAmendmentSEC == "" && speakingCountries.Count() > 0)
+                {
+                    _speakerControl.TopAmendmentSEC = speakingCountries[0].Country!;
+                }
+
+                speakingCountries = delegationsDBContext.Delegation
+                   .OrderBy(x => x.AmendmentPoints)
+                   .ThenBy(x => x.Login)
+                   .Where(x => x.amendments != null && x.amendments!.Count() > 0)
+                   .Where(x => x.amendments!.Any(y => y.ResolutionID == currentResolution))
+                   .Where(x => x.Country != _speakerControl.TopAmendmentSEC).ToList();
+
+                if (_speakerControl.TopAmendmentSEC != "")
+                {
+                    speakingCountries.Insert(0, delegationsDBContext.Delegation.First(x => x.Country == _speakerControl.TopAmendmentSEC));
+                }
             }
-
-
-            List<Delegation> speakingCountries = delegationsDBContext.Delegation
-                               .OrderBy(x => x.AmendmentPoints)
-                               .ThenBy(x => x.Login)
-                               .Where(x => x.amendments != null && x.amendments!.Count() > 0)
-                               .Where(x => x.amendments!.Any(y => y.ResolutionID == currentResolution)).ToList();
 
             //ViewData["displayList"] = speakingCountries;
             return speakingCountries;
@@ -260,9 +375,36 @@ namespace MUN_Digital_Speaker.Controllers
             List<Delegation> am = GetAmendmentList(councel);
             if (am != null && am.Count() >= 1)
             {
-                string topAmmendmentText = am![0].amendments.FirstOrDefault(x => x.ResolutionID == _speakerControl!.CurrentResolutionGEN!).Change;
-                string clasue = am![0].amendments.FirstOrDefault(x => x.ResolutionID == _speakerControl!.CurrentResolutionGEN!).ClauseNumber;
-                return "(" + clasue + ") " + topAmmendmentText;
+                if (councel == "GEN")
+                {
+                    string topAmmendmentText = am![0].amendments.FirstOrDefault(x => x.ResolutionID == _speakerControl!.CurrentResolutionGEN!).Change;
+                    string clasue = am![0].amendments.FirstOrDefault(x => x.ResolutionID == _speakerControl!.CurrentResolutionGEN!).ClauseNumber;
+                    return "(" + clasue + ") " + topAmmendmentText;
+                }
+                if (councel == "ECO")
+                {
+                    string topAmmendmentText = am![0].amendments.FirstOrDefault(x => x.ResolutionID == _speakerControl!.CurrentResolutionECO!).Change;
+                    string clasue = am![0].amendments.FirstOrDefault(x => x.ResolutionID == _speakerControl!.CurrentResolutionECO!).ClauseNumber;
+                    return "(" + clasue + ") " + topAmmendmentText;
+                }
+                if (councel == "ENV")
+                {
+                    string topAmmendmentText = am![0].amendments.FirstOrDefault(x => x.ResolutionID == _speakerControl!.CurrentResolutionENV!).Change;
+                    string clasue = am![0].amendments.FirstOrDefault(x => x.ResolutionID == _speakerControl!.CurrentResolutionENV!).ClauseNumber;
+                    return "(" + clasue + ") " + topAmmendmentText;
+                }
+                if (councel == "HE")
+                {
+                    string topAmmendmentText = am![0].amendments.FirstOrDefault(x => x.ResolutionID == _speakerControl!.CurrentResolutionHE!).Change;
+                    string clasue = am![0].amendments.FirstOrDefault(x => x.ResolutionID == _speakerControl!.CurrentResolutionHE!).ClauseNumber;
+                    return "(" + clasue + ") " + topAmmendmentText;
+                }
+                if (councel == "SEC")
+                {
+                    string topAmmendmentText = am![0].amendments.FirstOrDefault(x => x.ResolutionID == _speakerControl!.CurrentResolutionSEC!).Change;
+                    string clasue = am![0].amendments.FirstOrDefault(x => x.ResolutionID == _speakerControl!.CurrentResolutionSEC!).ClauseNumber;
+                    return "(" + clasue + ") " + topAmmendmentText;
+                }
             }
             return "";
         }

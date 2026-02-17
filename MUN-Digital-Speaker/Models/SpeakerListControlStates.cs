@@ -24,6 +24,13 @@
         public List<string> topSpeakerListHE { get; set; } = new List<string>();
         public List<string> topSpeakerListSEC { get; set; } = new List<string>();
 
+        public string TopAmendmentGEN { get; set; } = "";
+        public string TopAmendmentECO { get; set; } = "";
+        public string TopAmendmentENV { get; set; } = "";
+        public string TopAmendmentHE { get; set; } = "";
+        public string TopAmendmentSEC { get; set; } = "";
+
+
 
         //Constants
 
