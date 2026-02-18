@@ -217,6 +217,8 @@ namespace MUN_Digital_Speaker.Controllers
 
             if (councel == "GEN")
             {
+                currentResolution = _speakerControl.CurrentResolutionGEN;
+
                 speakingCountries = delegationsDBContext.Delegation
                    .OrderBy(x => x.AmendmentPoints)
                    .ThenBy(x => x.Login)
@@ -246,6 +248,8 @@ namespace MUN_Digital_Speaker.Controllers
 
             if (councel == "ECO")
             {
+                currentResolution = _speakerControl.CurrentResolutionECO;
+
                 speakingCountries = delegationsDBContext.Delegation
                    .OrderBy(x => x.AmendmentPoints)
                    .ThenBy(x => x.Login)
@@ -274,6 +278,8 @@ namespace MUN_Digital_Speaker.Controllers
 
             if (councel == "ENV")
             {
+                currentResolution = _speakerControl.CurrentResolutionENV;
+
                 speakingCountries = delegationsDBContext.Delegation
                    .OrderBy(x => x.AmendmentPoints)
                    .ThenBy(x => x.Login)
@@ -302,6 +308,8 @@ namespace MUN_Digital_Speaker.Controllers
 
             if (councel == "HE")
             {
+                currentResolution = _speakerControl.CurrentResolutionHE;
+
                 speakingCountries = delegationsDBContext.Delegation
                    .OrderBy(x => x.AmendmentPoints)
                    .ThenBy(x => x.Login)
@@ -330,6 +338,8 @@ namespace MUN_Digital_Speaker.Controllers
 
             if (councel == "SEC")
             {
+                currentResolution = _speakerControl.CurrentResolutionSEC;
+
                 speakingCountries = delegationsDBContext.Delegation
                    .OrderBy(x => x.AmendmentPoints)
                    .ThenBy(x => x.Login)
